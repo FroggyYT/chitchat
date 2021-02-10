@@ -99,11 +99,11 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     title.e.textContent = "Feed";
     
 });
-var friendsContainer = new REL("div", mainContainer, "friendsContainer");
-var dmContainer = new REL("div", mainContainer, "dmContainer");
-var chatroomContainer = new REL("div", mainContainer, "chatroomContainer");
-var profileContainer = new REL("div", mainContainer, "profileContainer");
-var settingsContainer = new REL("div", mainContainer, "settingsContainer");
+var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {});
+var dmContainer = new REL("div", mainContainer, "dmContainer", () => {});
+var chatroomContainer = new REL("div", mainContainer, "chatroomContainer", () => {});
+var profileContainer = new REL("div", mainContainer, "profileContainer", () => {});
+var settingsContainer = new REL("div", mainContainer, "settingsContainer", () => {});
 
 feedContainer.add();
 
