@@ -71,16 +71,18 @@ mainContainer.e.id = "mainContainer";
 
 
 class REL {
-    constructor(name, append, id) {
+    constructor(name, append, id, fun) {
         this.name = name;
         this.append = append;
         this.id = id;
+        this.fun = fun;
     }
     
     add() {
         this.el = new El(this.name, this.append.e);
         this.e = this.el.e;
         this.e.id = this.id;  
+        this.fun();
     }
     
     remove() {
@@ -90,7 +92,13 @@ class REL {
 }
 
 
-var feedContainer = new REL("div", mainContainer, "feedContainer");
+var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
+    
+    var title = new El("h1", feedContainer.e);
+    title.e.id = "feedTitle";
+    title.e.textContent = "Feed";
+    
+});
 var friendsContainer = new REL("div", mainContainer, "friendsContainer");
 var dmContainer = new REL("div", mainContainer, "dmContainer");
 var chatroomContainer = new REL("div", mainContainer, "chatroomContainer");
@@ -98,15 +106,6 @@ var profileContainer = new REL("div", mainContainer, "profileContainer");
 var settingsContainer = new REL("div", mainContainer, "settingsContainer");
 
 feedContainer.add();
-
-
-(function(){
-
-    var title = new El("h1", feedContainer.e);
-    title.e.id = "feedTitle";
-    title.e.textContent = "Feed";
-    
-})(); // feedContainer
 
 
 
