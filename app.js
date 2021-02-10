@@ -31,7 +31,7 @@ app.post("/signup", (req, res) => {
     var params = req.query;
 
     if (params["username"] != undefined && params["password"] != undefined && params["username"] != "" && params["password"] != ""){
-        db.find({ username:params["username"] }, (err, docs) => {
+        db.find({ username:params["username"].toLowercase() }, (err, docs) => {
             if (docs.length > 0) {
                 res.send("Username Taken")
             } else {
