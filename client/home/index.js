@@ -102,8 +102,9 @@ feedContainer.add();
 
 (function(){
 
-    var title = new REL("h1", feedContainer, "feedTitle");
-    title.add();
+    var title = new El("h1", feedContainer.e);
+    title.e.id = "feedTitle";
+    title.e.textContent = "Feed";
     
 })(); // feedContainer
 
