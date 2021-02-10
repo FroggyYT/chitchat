@@ -82,3 +82,19 @@
     top:12.5%;
     height:87.5%;
 }
+
+#feedContainer {
+    width:100%;
+    top:0;
+    height:100%;
+    left:0;
+    position:absolute;
+}
+
+#feedTitle {
+    width:100%;
+    top:10%;
+    height:30%;
+    left:0;
+    position:absolute;
+}
