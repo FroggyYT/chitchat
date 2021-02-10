@@ -67,7 +67,7 @@ class Item {
 
 
 var mainContainer = new El("div", document.body);
-mainContainer.id = "mainContainer";
+mainContainer.e.id = "mainContainer";
 
 
 
