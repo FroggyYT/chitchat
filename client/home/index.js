@@ -66,6 +66,7 @@ var items = [
     new Item("button", sidebar.e, "Feed", "feedButton"),
     new Item("button", sidebar.e, "Friends", "friendsButton"),
     new Item("button", sidebar.e, "Direct Messages", "dmButton"),
+    new Item("button", sidebar.e, "Chatroom", "chatroomButton"),
     new Item("button", sidebar.e, "Profile", "profileButton"),
     new Item("button", sidebar.e, "Settings", "settingsButton")
 ];
