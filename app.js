@@ -13,7 +13,7 @@ app.use("/", express.static(`${__dirname}/client`));
 app.get("/", (req, res) => {
     var params = req.query;
     if (params["loggedIn"] == "true" && params["username"] != undefined && params["password"] != undefined) {
-        db.find({ username:params["username"] }, (err, docs) => {
+        db.find({ username:params["username"].toLowercase() }, (err, docs) => {
             if (docs.length != 1) return res.send("Username Not Found");
             var doc = docs[0];
 
@@ -48,7 +48,7 @@ app.get("/testlogin", (req, res) => {
     var params = req.query;
 
     if (params["username"] != undefined && params["password"] != undefined && params["username"] != "" && params["password"] != ""){
-        db.find({ username:params["username"] }, (err, docs) => {
+        db.find({ username:params["username"].toLowercase() }, (err, docs) => {
             if (docs.length != 1) return res.send("Username Not Found");
             var doc = docs[0];
 
