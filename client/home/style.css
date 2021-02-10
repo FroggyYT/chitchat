@@ -74,3 +74,11 @@
 .sidebar-item:last-child {
     border-bottom-style:none;
 }
+
+#mainContainer {
+    width:90%;
+    left:10%;
+    position:absolute;
+    top:12.5%;
+    height:87.5%;
+}
