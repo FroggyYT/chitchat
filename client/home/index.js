@@ -97,14 +97,15 @@ var chatroomContainer = new REL("div", mainContainer, "chatroomContainer");
 var profileContainer = new REL("div", mainContainer, "profileContainer");
 var settingsContainer = new REL("div", mainContainer, "settingsContainer");
 
+feedContainer.add();
 
 var mainConts = [ feedContainer, friendsContainer, dmContainer, chatroomContainer, profileContainer, settingsContainer ];
 
 var items = [
-    new Item("button", sidebar.e, "Feed", "feedButton", () => {}),
-    new Item("button", sidebar.e, "Friends", "friendsButton", () => {}),
-    new Item("button", sidebar.e, "Direct Messages", "dmButton", () => {}),
+    new Item("button", sidebar.e, "Feed", "feedButton", () => { mainConts.forEach(v => v.remove()); feedContainer.add(); }),
+    new Item("button", sidebar.e, "Friends", "friendsButton", () => { mainConts.forEach(v => v.remove()); friendsContainer.add(); }),
+    new Item("button", sidebar.e, "Direct Messages", "dmButton", () => { mainConts.forEach(v => v.remove()); dmContainer.add(); }),
     new Item("button", sidebar.e, "Chatroom", "chatroomButton", () => { mainConts.forEach(v => v.remove()); chatroomContainer.add(); }),
     new Item("button", sidebar.e, "Profile", "profileButton", () => { mainConts.forEach(v => v.remove()); profileContainer.add(); }),
-    new Item("button", sidebar.e, "Settings", "settingsButton", () => {})
+    new Item("button", sidebar.e, "Settings", "settingsButton", () => { mainConts.forEach(v => v.remove()); settingsContainer.add(); })
 ];
