@@ -99,8 +99,8 @@ signupDialog.className = "rounded card dialog";
             .then(result => {
                 if (result == "OK") {
                     localStorage.setItem("loggedIn", true);
-                    localStorage.setItem("username", usernameBox.e.value.toLowercase());
-                    localStorage.setItem("password", passwordBox.e.value.toLowercase());
+                    localStorage.setItem("username", usernameBox.e.value);
+                    localStorage.setItem("password", passwordBox.e.value);
 
                     window.location = "/";
                 } else {
@@ -144,8 +144,8 @@ signupDialog.className = "rounded card dialog";
             .then(result => {
                 if (result == "OK") {
                     localStorage.setItem("loggedIn", true);
-                    localStorage.setItem("username", usernameBox.e.value.toLowercase());
-                    localStorage.setItem("password", passwordBox.e.value.toLowercase());
+                    localStorage.setItem("username", usernameBox.e.value);
+                    localStorage.setItem("password", passwordBox.e.value);
 
                     window.location = "/";
                 } else {
