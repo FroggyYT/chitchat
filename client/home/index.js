@@ -77,7 +77,7 @@ class REL {
         this.id = id;
     }
     
-    append() {
+    add() {
         this.el = new El(this.name, this.append.e);
         this.e = this.el.e;
         this.e.id = this.id;  
@@ -100,7 +100,7 @@ var items = [
     new Item("button", sidebar.e, "Feed", "feedButton", () => {}),
     new Item("button", sidebar.e, "Friends", "friendsButton", () => {}),
     new Item("button", sidebar.e, "Direct Messages", "dmButton", () => {}),
-    new Item("button", sidebar.e, "Chatroom", "chatroomButton", () => { mainConts.forEach(v => v.remove()); chatroomContainer.append(); }),
-    new Item("button", sidebar.e, "Profile", "profileButton", () => { mainConts.forEach(v => v.remove()); profileContainer.append(); }),
+    new Item("button", sidebar.e, "Chatroom", "chatroomButton", () => { mainConts.forEach(v => v.remove()); chatroomContainer.add(); }),
+    new Item("button", sidebar.e, "Profile", "profileButton", () => { mainConts.forEach(v => v.remove()); profileContainer.add(); }),
     new Item("button", sidebar.e, "Settings", "settingsButton", () => {})
 ];
