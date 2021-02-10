@@ -90,11 +90,15 @@ class REL {
 }
 
 
-
-var profileContainer = new REL("div", mainContainer, "profileContainer");
+var feedContainer = new REL("div", mainContainer, "feedContainer");
+var friendsContainer = new REL("div", mainContainer, "friendsContainer");
+var dmContainer = new REL("div", mainContainer, "dmContainer");
 var chatroomContainer = new REL("div", mainContainer, "chatroomContainer");
+var profileContainer = new REL("div", mainContainer, "profileContainer");
+var settingsContainer = new REL("div", mainContainer, "settingsContainer");
 
-var mainConts = [ profileContainer, chatroomContainer ];
+
+var mainConts = [ feedContainer, friendsContainer, dmContainer, chatroomContainer, profileContainer, settingsContainer ];
 
 var items = [
     new Item("button", sidebar.e, "Feed", "feedButton", () => {}),
