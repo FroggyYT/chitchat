@@ -53,20 +53,29 @@ sidebar.e.id = "sidebar"
 sidebar.e.className = "rounded card";
 
 class Item {
-    constructor(name, append, title, id) {
+    constructor(name, append, title, id, fun) {
         this.el = new El(name, append);
         this.e = this.el.e;
         this.e.textContent = title;
         this.e.id = id;
         this.e.className = "sidebar-item";
+        this.e.addEventListener("click", fun);
     }
 }
 
+
+
+
+var mainContainer = new El("div", document.body);
+mainContainer.id = "mainContainer";
+
+
+
 var items = [
-    new Item("button", sidebar.e, "Feed", "feedButton"),
-    new Item("button", sidebar.e, "Friends", "friendsButton"),
-    new Item("button", sidebar.e, "Direct Messages", "dmButton"),
-    new Item("button", sidebar.e, "Chatroom", "chatroomButton"),
-    new Item("button", sidebar.e, "Profile", "profileButton"),
-    new Item("button", sidebar.e, "Settings", "settingsButton")
+    new Item("button", sidebar.e, "Feed", "feedButton", () => {}),
+    new Item("button", sidebar.e, "Friends", "friendsButton", () => {}),
+    new Item("button", sidebar.e, "Direct Messages", "dmButton", () => {}),
+    new Item("button", sidebar.e, "Chatroom", "chatroomButton", () => {}),
+    new Item("button", sidebar.e, "Profile", "profileButton", () => {}),
+    new Item("button", sidebar.e, "Settings", "settingsButton", () => {})
 ];
