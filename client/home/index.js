@@ -29,7 +29,7 @@ searchContainer.e.className = "rounded card";
 
 var searchBar = new El("input", searchContainer.e);
 searchBar.e.id = "searchBar";
-searchBar.e.placeholder = "Search?";
+searchBar.e.placeholder = "Search";
 
 var searchButton = new El("button", searchContainer.e);
 searchButton.e.id = "searchButton";
