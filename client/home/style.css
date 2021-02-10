@@ -97,4 +97,7 @@
     height:30%;
     left:0;
     position:absolute;
+    text-align: center;
+    color:white;
+    font-size:2em;
 }
