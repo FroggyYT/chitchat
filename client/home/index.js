@@ -99,6 +99,16 @@ var settingsContainer = new REL("div", mainContainer, "settingsContainer");
 
 feedContainer.add();
 
+
+(function(){
+
+    var title = new REL("h1", feedContainer, "feedTitle");
+    title.add();
+    
+})(); // feedContainer
+
+
+
 var mainConts = [ feedContainer, friendsContainer, dmContainer, chatroomContainer, profileContainer, settingsContainer ];
 
 var items = [
