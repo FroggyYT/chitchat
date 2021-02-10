@@ -70,12 +70,37 @@ var mainContainer = new El("div", document.body);
 mainContainer.e.id = "mainContainer";
 
 
+class REL {
+    constructor(name, append, id) {
+        this.name = name;
+        this.append = append;
+        this.id = id;
+    }
+    
+    append() {
+        this.el = new El(this.name, this.append.e);
+        this.e = this.el.e;
+        this.e.id = this.id;  
+    }
+    
+    remove() {
+        if (!this.e) return;
+        this.e.remove();   
+    }
+}
+
+
+
+var profileContainer = new REL("div", mainContainer, "profileContainer");
+var chatroomContainer = new REL("div", mainContainer, "chatroomContainer");
+
+var mainConts = [ profileContainer, chatroomContainer ];
 
 var items = [
     new Item("button", sidebar.e, "Feed", "feedButton", () => {}),
     new Item("button", sidebar.e, "Friends", "friendsButton", () => {}),
     new Item("button", sidebar.e, "Direct Messages", "dmButton", () => {}),
-    new Item("button", sidebar.e, "Chatroom", "chatroomButton", () => {}),
-    new Item("button", sidebar.e, "Profile", "profileButton", () => {}),
+    new Item("button", sidebar.e, "Chatroom", "chatroomButton", () => { mainConts.forEach(v => v.remove()); chatroomContainer.append(); }),
+    new Item("button", sidebar.e, "Profile", "profileButton", () => { mainConts.forEach(v => v.remove()); profileContainer.append(); }),
     new Item("button", sidebar.e, "Settings", "settingsButton", () => {})
 ];
