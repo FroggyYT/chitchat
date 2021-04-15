@@ -99,6 +99,20 @@ class FeedCard {
         this.content = content;
         this.info = info;
     }
+
+    fetchInfo() {
+        s.emit("fetchFeedCardInfo", this.info.id);
+    }
+
+    add() {
+        this.el = document.createElement("div");
+        this.el.id = this.info.id;
+        this.el.className = "rounded card feed-card";
+    }
+
+    remove() {
+        this.el.remove();
+    }
 }
 
 
