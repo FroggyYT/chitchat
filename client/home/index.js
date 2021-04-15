@@ -93,11 +93,9 @@ class REL {
 
 
 var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
-    
     var title = new El("h1", feedContainer.e);
     title.e.id = "feedTitle";
     title.e.textContent = "Feed";
-    
 });
 var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {
     var title = new El("h1", friendsContainer.e);
