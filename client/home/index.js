@@ -92,6 +92,17 @@ class REL {
 }
 
 
+
+class FeedCard {
+    constructor(author, content, info) {
+        this.author = author;
+        this.content = content;
+        this.info = info;
+    }
+}
+
+
+
 var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     var title = new El("h1", feedContainer.e);
     title.e.id = "feedTitle";
@@ -122,6 +133,8 @@ var settingsContainer = new REL("div", mainContainer, "settingsContainer", () =>
     title.e.id = "feedTitle";
     title.e.textContent = "Settings";
 });
+
+
 
 feedContainer.add();
 
