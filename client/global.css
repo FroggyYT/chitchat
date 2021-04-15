@@ -12,6 +12,7 @@ input {
     outline: none;
     border-style:solid;
     border-color:rgb(44, 124, 190);
+    padding:2px;
 }
 
 button.btn {
