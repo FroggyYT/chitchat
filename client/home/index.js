@@ -132,7 +132,7 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     newFeed.className = "rounded card";
     feedContainer.e.append(newFeed);
 
-    var newFeedInput = document.createElement("input");
+    var newFeedInput = document.createElement("textarea");
     newFeedInput.id = "newFeedInput";
     newFeedInput.className = "rounded card";
     newFeed.append(newFeedInput);

@@ -15,6 +15,13 @@ input {
     padding: 10px;
 }
 
+textarea {
+    outline: none;
+    padding:10px;
+    border-style:solid;
+    border-color:rgb(44, 124, 190);
+}
+
 button.btn {
     background-color: rgb(44, 124, 190);
     border-style: solid;
