@@ -142,6 +142,11 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     newFeedPostButton.className = "rounded btn";
     newFeedPostButton.textContent = "Post";
     newFeed.append(newFeedPostButton);
+
+    /*var newFeedTextCount = document.createElement("p");
+    newFeedTextCount.id = "newFeedTextCount";
+    newFeedTextCount.textContent = "0/240";
+    newFeedInput.append(newFeedTextCount);*/
 });
 
 var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {
