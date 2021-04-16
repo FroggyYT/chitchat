@@ -103,3 +103,58 @@ app.post("/newFeedPost", (req, res) => {
         });
     }
 });
+
+app.get("/fetchUserUUID", (req, res) => {
+    var params = req.query;
+
+    if (params["name"] == undefined) return res.end();
+
+    db.find({ username: params["name"] }, (err, docs) => {
+        if (docs.length != 1) return res.end();
+        var doc = docs[0];
+
+        res.send(doc.uuid);
+    });
+});
+
+app.get("/searchUser", (req, res) => {
+    var params = req.query;
+
+    if (params["name"] != undefined) {
+        db.find({}, (err, docs) => {
+            if (docs == undefined) return res.end();
+
+            var users = [];
+
+            docs.forEach((v, i) => {
+                if (new RegExp(params["name"]).test(v.username)) users.push({ username: v.username, uuid: v.uuid });
+            });
+
+            res.send(users);
+        });
+    } else {
+        db.find({}, (err, docs) => {
+            if (docs == undefined) return res.end();
+
+            var users = [];
+
+            docs.forEach((v, i) => {
+                users.push({ username: v.username, uuid: v.uuid });
+            });
+
+            res.send(users);
+        });
+    }
+});
+
+app.get("/getFriends", (req, res) => {
+    var params = req.query;
+    if (params["name"] == undefined) return res.end();
+
+    db.find({ username: params["name"] }, (err, docs) => {
+        if (docs.length != 1) return res.end();
+        var doc = docs[0];
+
+        res.send(doc.friends);
+    });
+});

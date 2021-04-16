@@ -199,6 +199,13 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     .catch(error => console.log('error', error));
 });
 
+
+
+
+
+
+
+
 var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {
     var title = new El("h1", friendsContainer.e);
     title.e.id = "feedTitle";
