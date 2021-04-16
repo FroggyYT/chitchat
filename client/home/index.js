@@ -116,6 +116,7 @@ class FeedCard {
         this.el = document.createElement("div");
         this.el.id = this.info.id;
         this.el.className = "rounded card feed-card";
+        feedContainer.e.append(this.el);
     }
 
     remove() {
