@@ -103,10 +103,10 @@
 }
 
 #newFeed {
-    width:60%;
+    width:40%;
     top:20px;
-    height:10%;
-    left:20%;
+    height:30%;
+    left:30%;
     position:absolute;
     background-color: rgb(80, 80, 80);
 }
