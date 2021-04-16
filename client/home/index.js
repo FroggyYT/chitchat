@@ -152,7 +152,7 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", async () => {
     };
 
     var resp = await fetch(`/fetchFeedContent`, requestOptions);
-    var data = resp.json();
+    var data = await resp.json();
 
     console.log(data);
 });
