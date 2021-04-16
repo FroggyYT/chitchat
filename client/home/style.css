@@ -104,10 +104,10 @@
 
 #newFeed {
     width:40%;
-    top:5%;
+    margin-top:2%;
+    margin-bottom:4%;
     height:30%;
-    left:30%;
-    position:absolute;
+    margin-left:30%;
     background-color: rgb(80, 80, 80);
 }
 
@@ -116,15 +116,23 @@
     left:5%;
     height:70%;
     top:5%;
-    position:absolute;
+    position:relative;
 }
 
 #newFeedPostButton {
     width:20%;
     left:75%;
-    top:80%;
+    top:5%;
     height:15%;
-    position:absolute;
+    position:relative;
+}
+
+.feed-card {
+    width:40%;
+    margin-top:1%;
+    height:30%;
+    margin-left:30%;
+    background-color:rgb(80, 80, 80);
 }
 
 /*#newFeedTextCount {

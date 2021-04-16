@@ -124,6 +124,8 @@ class FeedCard {
 
 
 
+var feedCards = [];
+
 var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     var newFeed = document.createElement("div");
     newFeed.id = "newFeed";
@@ -151,11 +153,16 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
         redirect: 'follow'
     };
 
-    fetch(`/fetchFeedContent`, requestOptions)
+    fetch("/fetchFeed", requestOptions)
     .then(resp => resp.json())
     .then(data => {
-        console.log(data);
-    });
+        data.forEach((v, i) => {
+            var card = new FeedCard(v);
+            card.add();
+            feedCards.push(card);
+        });
+    })
+    .catch(error => console.log('error', error));
 });
 
 var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {

@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 var server = require("http").Server(app);
-server.listen(process.env.PORT || 80);
+server.listen(process.env.PORT || 3000);
 
 var Datastore = require("nedb");
 
@@ -11,6 +11,7 @@ var db = new Datastore("users.db");
 db.loadDatabase();
 
 var feedDB = new Datastore("feed.db");
+feedDB.loadDatabase();
 
 app.use("/", express.static(`${__dirname}/client`));
 
@@ -79,8 +80,14 @@ app.get("/fetchFeedCardInfo", (req, res) => {
     }
 });
 
-app.get("/fetchFeedContent", (req, res) => {
+app.get("/fetchFeed", (req, res) => {
     feedDB.find({}, (err, docs) => {
         res.send(docs);
     });
+});
+
+app.post("/newFeedPost", (req, res) => {
+    var params = req.query;
+    
+    feedDB.insert({})
 });
