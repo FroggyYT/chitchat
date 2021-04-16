@@ -94,9 +94,7 @@ class REL {
 
 
 class FeedCard {
-    constructor(author, content, info) {
-        this.author = author;
-        this.content = content;
+    constructor(info) {
         this.info = info;
     }
 
@@ -126,7 +124,7 @@ class FeedCard {
 
 
 
-var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
+var feedContainer = new REL("div", mainContainer, "feedContainer", async () => {
     var newFeed = document.createElement("div");
     newFeed.id = "newFeed";
     newFeed.className = "rounded card";
@@ -147,6 +145,16 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     newFeedTextCount.id = "newFeedTextCount";
     newFeedTextCount.textContent = "0/240";
     newFeedInput.append(newFeedTextCount);*/
+
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+
+    var resp = await fetch(`/fetchFeedContent`, requestOptions);
+    var data = resp.json();
+
+    console.log(data);
 });
 
 var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {

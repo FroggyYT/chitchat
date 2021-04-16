@@ -78,3 +78,11 @@ app.get("/fetchFeedCardInfo", (req, res) => {
         res.send("NO UUID");
     }
 });
+
+app.get("/fetchFeedContent", (req, res) => {
+    var params = req.query;
+
+    feedDB.find({}, (err, docs) => {
+        if (!err) res.send(docs);
+    });
+});
