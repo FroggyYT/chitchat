@@ -80,8 +80,6 @@ app.get("/fetchFeedCardInfo", (req, res) => {
 });
 
 app.get("/fetchFeedContent", (req, res) => {
-    var params = req.query;
-
     feedDB.find({}, (err, docs) => {
         if (!err) res.send(docs);
     });
