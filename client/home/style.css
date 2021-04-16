@@ -104,9 +104,25 @@
 
 #newFeed {
     width:40%;
-    top:20px;
+    top:5%;
     height:30%;
     left:30%;
     position:absolute;
     background-color: rgb(80, 80, 80);
+}
+
+#newFeedInput {
+    width:90%;
+    left:5%;
+    height:70%;
+    top:5%;
+    position:absolute;
+}
+
+#newFeedPostButton {
+    width:10%;
+    left:85%;
+    top:80%;
+    height:15%;
+    position:absolute;
 }

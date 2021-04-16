@@ -131,6 +131,17 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     newFeed.id = "newFeed";
     newFeed.className = "rounded card";
     feedContainer.e.append(newFeed);
+
+    var newFeedInput = document.createElement("input");
+    newFeedInput.id = "newFeedInput";
+    newFeedInput.className = "rounded card";
+    newFeed.append(newFeedInput);
+
+    var newFeedPostButton = document.createElement("button");
+    newFeedPostButton.id = "newFeedPostButton";
+    newFeedPostButton.className = "rounded btn";
+    newFeedPostButton.textContent = "Post";
+    newFeed.append(newFeedPostButton);
 });
 
 var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {
