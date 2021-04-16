@@ -124,7 +124,7 @@ class FeedCard {
 
 
 
-var feedContainer = new REL("div", mainContainer, "feedContainer", async () => {
+var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     var newFeed = document.createElement("div");
     newFeed.id = "newFeed";
     newFeed.className = "rounded card";
@@ -151,10 +151,11 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", async () => {
         redirect: 'follow'
     };
 
-    var resp = await fetch(`/fetchFeedContent`, requestOptions);
-    var data = await resp.json();
-
-    console.log(data);
+    var resp = await fetch(`/fetchFeedContent`, requestOptions)
+    .then(resp => resp.json())
+    .then(data => {
+        console.log(data);
+    });
 });
 
 var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {
