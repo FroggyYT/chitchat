@@ -100,8 +100,16 @@ class FeedCard {
         this.info = info;
     }
 
-    fetchInfo() {
-        s.emit("fetchFeedCardInfo", this.info.id);
+    async fetchInfo() {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+          
+        var resp = await fetch(`/fetchFeedCardInfo?uuid=${this.info.uuid}`, requestOptions);
+        var data = await response.json();
+        
+        return data;
     }
 
     add() {
@@ -118,30 +126,36 @@ class FeedCard {
 
 
 var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
-    var title = new El("h1", feedContainer.e);
-    title.e.id = "feedTitle";
-    title.e.textContent = "Feed";
+    var newFeed = document.createElement("div");
+    newFeed.id = "newFeed";
+    newFeed.className = "rounded card";
+    feedContainer.e.append(newFeed);
 });
+
 var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {
     var title = new El("h1", friendsContainer.e);
     title.e.id = "feedTitle";
     title.e.textContent = "Friends";
 });
+
 var dmContainer = new REL("div", mainContainer, "dmContainer", () => {
     var title = new El("h1", dmContainer.e);
     title.e.id = "feedTitle";
     title.e.textContent = "Direct Messages";
 });
+
 var chatroomContainer = new REL("div", mainContainer, "chatroomContainer", () => {
     var title = new El("h1", chatroomContainer.e);
     title.e.id = "feedTitle";
     title.e.textContent = "Chatroom";
 });
+
 var profileContainer = new REL("div", mainContainer, "profileContainer", () => {
     var title = new El("h1", profileContainer.e);
     title.e.id = "feedTitle";
     title.e.textContent = "Profile";
 });
+
 var settingsContainer = new REL("div", mainContainer, "settingsContainer", () => {
     var title = new El("h1", settingsContainer.e);
     title.e.id = "feedTitle";

@@ -94,20 +94,20 @@ signupDialog.className = "rounded card dialog";
             redirect: 'follow'
           };
           
-          fetch(`/testlogin?username=${usernameBox.e.value}&password=${passwordBox.e.value}`, requestOptions)
-            .then(response => response.text())
-            .then(result => {
-                if (result == "OK") {
-                    localStorage.setItem("loggedIn", true);
-                    localStorage.setItem("username", usernameBox.e.value);
-                    localStorage.setItem("password", passwordBox.e.value);
+        fetch(`/testlogin?username=${usernameBox.e.value}&password=${passwordBox.e.value}`, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            if (result == "OK") {
+                localStorage.setItem("loggedIn", true);
+                localStorage.setItem("username", usernameBox.e.value);
+                localStorage.setItem("password", passwordBox.e.value);
 
-                    window.location = "/";
-                } else {
-                    alert(result);
-                }
-            })
-            .catch(error => console.log('error', error));
+                window.location = "/";
+            } else {
+                alert(result);
+            }
+        })
+        .catch(error => console.log('error', error));
     });
 
 })(); // Login Dialog

@@ -10,6 +10,8 @@ var uuidv4 = require("uuid").v4;
 var db = new Datastore("users.db");
 db.loadDatabase();
 
+var feedDB = new Datastore("feed.db");
+
 app.use("/", express.static(`${__dirname}/client`));
 
 app.get("/", (req, res) => {
@@ -59,5 +61,20 @@ app.get("/testlogin", (req, res) => {
         });
     } else {
         res.send("Username/Password left blank");
+    }
+});
+
+app.get("/fetchFeedCardInfo", (req, res) => {
+    var params = req.query;
+
+    if (params["uuid"] != undefined) {
+        feedDB.find({ uuid:params["uuid"] }, (err, docs) => {
+            if (docs.length != 1) return res.send("NO FEED CARD FOUND");
+            var doc = docs[0];
+            
+            return res.send(doc);
+        });
+    } else {
+        res.send("NO UUID");
     }
 });
