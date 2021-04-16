@@ -88,6 +88,6 @@ app.get("/fetchFeed", (req, res) => {
 
 app.post("/newFeedPost", (req, res) => {
     var params = req.query;
-    
-    feedDB.insert({})
+
+    // feedDB.insert({})
 });
