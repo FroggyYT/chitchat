@@ -5,7 +5,9 @@ server.listen(process.env.PORT || 80);
 
 var Datastore = require("nedb");
 
-var db = new Datastore("data.db");
+var uuidv4 = require("uuid").v4;
+
+var db = new Datastore("users.db");
 db.loadDatabase();
 
 app.use("/", express.static(`${__dirname}/client`));
@@ -35,7 +37,7 @@ app.post("/signup", (req, res) => {
             if (docs.length > 0) {
                 res.send("Username Taken")
             } else {
-                db.insert({username:params["username"], password:params["password"]});
+                db.insert({username:params["username"], password:params["password"], uuid: uuidv4()});
                 res.send("OK");
             }
         });
