@@ -72,7 +72,7 @@ app.get("/fetchFeedCardInfo", (req, res) => {
         feedDB.find({ uuid:params["uuid"] }, (err, docs) => {
             if (docs.length != 1) return res.send("NO FEED CARD FOUND");
             var doc = docs[0];
-            
+
             return res.send(doc);
         });
     } else {
