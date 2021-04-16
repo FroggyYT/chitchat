@@ -151,7 +151,7 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
         redirect: 'follow'
     };
 
-    var resp = await fetch(`/fetchFeedContent`, requestOptions)
+    fetch(`/fetchFeedContent`, requestOptions)
     .then(resp => resp.json())
     .then(data => {
         console.log(data);
