@@ -105,7 +105,7 @@ class FeedCard {
         };
           
         var resp = await fetch(`/fetchFeedCardInfo?uuid=${this.info.uuid}`, requestOptions);
-        var data = await response.json();
+        var data = await resp.json();
         
         return data;
     }
@@ -115,6 +115,28 @@ class FeedCard {
         this.el.id = this.info.id;
         this.el.className = "rounded card feed-card";
         feedContainer.e.append(this.el);
+
+        this.topbar = document.createElement("div");
+        this.topbar.className = "feedTopbar";
+        this.el.append(this.topbar);
+
+        this.contentEl = document.createElement("div");
+        this.contentEl.className = "contentEl";
+        this.el.append(this.contentEl);
+
+        this.authorEl = document.createElement("a");
+        this.authorEl.className = "authorEl";
+        this.topbar.append(this.authorEl);
+
+        this.dateEl = document.createElement("a");
+        this.dateEl.className = "dateEl";
+        this.topbar.append(this.dateEl);
+
+        this.fetchInfo().then(info => {
+            this.authorEl.textContent = info.author.name + " ";
+            this.dateEl.textContent = info.date;
+            this.contentEl.textContent = info.content;
+        });
     }
 
     remove() {
@@ -142,6 +164,18 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     newFeedPostButton.className = "rounded btn";
     newFeedPostButton.textContent = "Post";
     newFeed.append(newFeedPostButton);
+
+    newFeedPostButton.addEventListener("click", () => {
+        var contentText = newFeedInput.value;
+        newFeedInput.value = "";
+        var reqData = {
+            "method": "post",
+            "body": JSON.stringify({ "name": localStorage.getItem("username"), "auth": { "username": localStorage.getItem("username"), "password": localStorage.getItem("password") }, "content": contentText }),
+            "headers": { "Content-Type": "application/json" }
+        }
+
+        fetch("/newFeedPost", reqData);
+    });
 
     /*var newFeedTextCount = document.createElement("p");
     newFeedTextCount.id = "newFeedTextCount";

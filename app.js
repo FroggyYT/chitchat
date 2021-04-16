@@ -86,8 +86,20 @@ app.get("/fetchFeed", (req, res) => {
     });
 });
 
-app.post("/newFeedPost", (req, res) => {
-    var params = req.query;
+app.use(express.json());
 
-    // feedDB.insert({})
+app.post("/newFeedPost", (req, res) => {
+    var data = req.body;
+
+    if (data.auth.username != undefined && data.auth.password != undefined) {
+        db.find({ username: data.auth.username }, (err, docs) => {
+            if (docs.length != 1) return res.end();
+            var doc = docs[0];
+
+            if (doc.password != data.auth.password) return res.end();
+
+            feedDB.insert({ author: { name: data.name, uuid: doc.uuid }, content: req.body.content, date: new Date().toLocaleDateString(), uuid: uuidv4() });
+            res.end();
+        });
+    }
 });

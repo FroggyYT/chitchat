@@ -140,7 +140,7 @@ signupDialog.className = "rounded card dialog";
           };
           
           fetch(`/signup?username=${usernameBox.e.value}&password=${passwordBox.e.value}`, requestOptions)
-            .then(response => response.text())
+            .then(response => response.json())
             .then(result => {
                 if (result == "OK") {
                     localStorage.setItem("loggedIn", true);

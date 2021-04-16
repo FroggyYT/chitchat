@@ -81,6 +81,7 @@
     position:absolute;
     top:12.5%;
     height:87.5%;
+    overflow:scroll;
 }
 
 #feedContainer {
@@ -138,3 +139,32 @@
 /*#newFeedTextCount {
     width:
 }*/
+
+.feedTopbar {
+    width:90%;
+    margin-left:5%;
+    margin-top:5%;
+    height:10%;
+    /* padding:10px; */
+    color:white;
+    font-size:1.2em;
+}
+
+.contentEl {
+    width:90%;
+    margin-left:5%;
+    margin-top:2%;
+    height:85%;
+    color:white;
+    overflow:scroll;
+    overflow-wrap:break-word;
+}
+
+.dateEl .authorEl {
+    margin:0;
+    padding:0;
+}
+
+body {
+    overflow:hidden;
+}
