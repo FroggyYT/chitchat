@@ -11,6 +11,8 @@ class El {
 var header = new El("div", document.body);
 header.e.id = "header";
 // header.e.className = "rounded card";
+var headerShadow = new El("div", header.e);
+headerShadow.e.id = "headerShadow";
 
 var titleContainer = new El("div", header.e);
 titleContainer.e.id = "titleContainer";
@@ -219,9 +221,10 @@ var dmContainer = new REL("div", mainContainer, "dmContainer", () => {
 });
 
 var chatroomContainer = new REL("div", mainContainer, "chatroomContainer", () => {
-    var title = new El("h1", chatroomContainer.e);
-    title.e.id = "feedTitle";
-    title.e.textContent = "Chatroom";
+    var frame = document.createElement("iframe");
+    frame.id = "chatFrame";
+    frame.src = "https://phschat.herokuapp.com/";
+    chatroomContainer.e.append(frame);
 });
 
 var profileContainer = new REL("div", mainContainer, "profileContainer", () => {
