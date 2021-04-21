@@ -98,10 +98,10 @@ signupDialog.className = "rounded card dialog";
         .then(response => response.text())
         .then(result => {
             if (result == "OK") {
-                localStorage.setItem("loggedIn", true);
-                localStorage.setItem("username", usernameBox.e.value);
-                localStorage.setItem("password", passwordBox.e.value);
-
+                document.cookie = "loggedIn=true";
+                document.cookie = `username=${usernameBox.e.value}`;
+                document.cookie = `password=${passwordBox.e.value}`;
+                
                 window.location = "/";
             } else {
                 alert(result);
@@ -140,12 +140,12 @@ signupDialog.className = "rounded card dialog";
           };
           
           fetch(`/signup?username=${usernameBox.e.value}&password=${passwordBox.e.value}`, requestOptions)
-            .then(response => response.json())
+            .then(response => response.text())
             .then(result => {
                 if (result == "OK") {
-                    localStorage.setItem("loggedIn", true);
-                    localStorage.setItem("username", usernameBox.e.value);
-                    localStorage.setItem("password", passwordBox.e.value);
+                    document.cookie = "loggedIn=true";
+                    document.cookie = `username=${usernameBox.e.value}`;
+                    document.cookie = `password=${passwordBox.e.value}`;
 
                     window.location = "/";
                 } else {

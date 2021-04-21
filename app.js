@@ -1,7 +1,16 @@
 var express = require("express");
 var app = express();
 var server = require("http").Server(app);
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 80, () => console.log("Server Started!"));
+
+var io = require("socket.io")(server, { cors: { origins: ["http://lukeddns.ddns.net"] } });
+// var io = require("socket.io")(server);
+
+var cookieParser = require("cookie-parser");
+
+// var cors = require("cors");
+// app.use(cors());
+
 
 var Datastore = require("nedb");
 
@@ -13,22 +22,30 @@ db.loadDatabase();
 var feedDB = new Datastore("feed.db");
 feedDB.loadDatabase();
 
+var convDB = new Datastore("conversations.db");
+convDB.loadDatabase();
+
 app.use("/", express.static(`${__dirname}/client`));
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header("Access-Control-Allow-Credentials", "true")
+  next();
+});
 
 app.get("/", (req, res) => {
     var params = req.query;
-    if (params["loggedIn"] == "true" && params["username"] != undefined && params["password"] != undefined) {
-        db.find({ username:params["username"] }, (err, docs) => {
+    if (req.cookies["loggedIn"] == "true" && req.cookies["username"] != undefined && req.cookies["password"] != undefined) {
+        db.find({ username:req.cookies["username"] }, (err, docs) => {
             if (docs.length != 1) return res.send("Username Not Found");
             var doc = docs[0];
 
-            if (doc.password == params["password"]) return res.sendFile(`${__dirname}/client/home/index.html`);
+            if (doc.password == req.cookies["password"]) return res.sendFile(`${__dirname}/client/home/index.html`);
             return res.send("Incorrect Password!");
         });
-    } else if (params["loggedIn"] == "false") {
-        res.sendFile(`${__dirname}/client/login/index.html`);
     } else {
-        res.sendFile(`${__dirname}/client/login/redirect.html`);
+        res.sendFile(`${__dirname}/client/login/index.html`);
     }
 });
 
@@ -40,7 +57,7 @@ app.post("/signup", (req, res) => {
             if (docs.length > 0) {
                 res.send("Username Taken")
             } else {
-                db.insert({username:params["username"], password:params["password"], uuid: uuidv4()});
+                db.insert({username:params["username"], password:params["password"], feedPosts:[], friends:[], uuid: uuidv4()});
                 res.send("OK");
             }
         });
@@ -82,7 +99,8 @@ app.get("/fetchFeedCardInfo", (req, res) => {
 
 app.get("/fetchFeed", (req, res) => {
     feedDB.find({}, (err, docs) => {
-        res.send(docs);
+        var sDocs = docs.sort((a, b) => b.timestamp - a.timestamp);
+        res.send(sDocs);
     });
 });
 
@@ -98,7 +116,13 @@ app.post("/newFeedPost", (req, res) => {
 
             if (doc.password != data.auth.password) return res.end();
 
-            feedDB.insert({ author: { name: data.name, uuid: doc.uuid }, content: req.body.content, date: new Date().toLocaleDateString(), uuid: uuidv4() });
+            var id = uuidv4();
+
+            db.update({ username: data.auth.username }, { $push: { feedPosts: id } }, {});
+            var insA = { author: { name: data.name, uuid: doc.uuid }, content: req.body.content, date: new Date().toLocaleDateString(), timestamp: new Date().getTime(), uuid: id };
+            feedDB.insert(insA);
+
+            io.emit("newPost");
             res.end();
         });
     }
@@ -156,5 +180,172 @@ app.get("/getFriends", (req, res) => {
         var doc = docs[0];
 
         res.send(doc.friends);
+    });
+});
+
+app.post("/addFriend", (req, res) => {
+    var cookies = req.cookies;
+    var params = req.query;
+    if (params["name"] == undefined) return res.end();
+
+    db.find({ username:cookies["username"] }, (_err, _docs) => {
+        if (_docs.length != 1) return res.end();
+        var _doc = _docs[0];
+        if (_doc.password != cookies["password"]) return res.end();
+
+        db.find({ username:params["name"] }, (err, docs) => {
+            if (docs.length != 1) return res.end();
+            var doc = docs[0];
+            if (_doc.friends.indexOf(doc.username) == -1){
+                db.update({ username:cookies["username"] }, { $push: { friends:doc.username } }, {});
+            }
+        });
+    });
+});
+
+app.post("/removeFriend", (req, res) => {
+    var cookies = req.cookies;
+    var params = req.query;
+    if (params["name"] == undefined) return res.end();
+
+    db.find({ username:cookies["username"] }, (_err, _docs) => {
+        if (_docs.length != 1) return res.end();
+        var _doc = _docs[0];
+        if (_doc.password != cookies["password"]) return res.end();
+
+        db.find({ username:params["name"] }, (err, docs) => {
+            if (docs.length != 1) return res.end();
+            var doc = docs[0];
+            db.update({ username:cookies["username"] }, { $pull: { friends:doc.username } }, {});
+        });
+    });
+});
+
+app.get("/getUserFeed", (req, res) => {
+    var params = req.query;
+    if (params["name"] == undefined) return res.end();
+
+    db.find({ username:params["name"] }, (err, docs) => {
+       if (docs.length != 1) return res.end();
+       var doc = docs[0];
+
+       res.send(doc.feedPosts);
+    });
+});
+
+app.post("/removePost", (req, res) => {
+    var params = req.query;
+    var cookies = req.cookies;
+    if (params["uuid"] == undefined) return res.end();
+
+    db.find({ username:cookies["username"] }, (_err, _docs) => {
+        if (_docs.length != 1) return res.end();
+        var _doc = _docs[0];
+        if (_doc.password != cookies["password"]) return res.end();
+
+        if (params["name"] == cookies["username"]) feedDB.remove({ uuid: params["uuid"] });
+        io.emit("newPost");
+    });
+});
+
+app.get("/openConversation", (req, res) => {
+    var params = req.query;
+    var cookies = req.cookies;
+    if (params["name"] == undefined) return res.end();
+
+    db.findOne({ username: cookies["username"] }, (err2, doc2) => {
+        if (err2 || doc2 == undefined) return res.end();
+        if (doc2.password != cookies["password"]) return res.end();
+
+        function cNewDoc() {
+            var id = uuidv4();
+            var newDoc = { "uuid": id, "users": [ { "name":cookies["username"], "messages": [] }, { "name":params["name"], "messages": [] } ] };
+            convDB.insert(newDoc);
+            return newDoc;
+        }
+
+        convDB.find({ "users.name": { $in: [ params["name"] ] } }, (err, docs) => {
+            if (docs.length < 1) return res.send(cNewDoc());
+            docs.forEach(doc => {
+                var newDocs = docs.filter(a => { return a.users.some(b => b.name == cookies["username"]) });
+                if (newDocs.length > 0) {
+                    return res.send(newDocs);
+                } else {
+                    return res.send(cNewDoc());
+                }
+            });
+        });
+    });
+});
+
+app.get("/getConversations", (req, res) => {
+    var cookies = req.cookies;
+    console.log(cookies);
+
+    db.findOne({ username: cookies["username"] }, (err2, doc2) => {
+	    if (err2 || doc2 == undefined) return res.end();
+      if (doc2.password != cookies["password"]) return res.end();
+
+    	convDB.find({ "users.name": { $in: [ cookies["username"] ] } }, (err, docs) => {
+        console.log("3");
+		    if (docs.length < 1 || err) return res.send([]);
+        var convs = docs.map(doc => { return { "uuid": doc.uuid, "partner": doc.users.filter(a => a.name != cookies["username"])[0].name } });
+        if (convs.length < 1) return res.end();
+		    console.log(convs);
+        return res.send(convs);
+    	});
+    });
+});
+
+/*
+app.post("/closeConversation", (req, res) => {
+    var params = req.query;
+    var cookies = req.cookies;
+    if (params["name"] == undefined) return res.end();
+
+    db.findOne({ username: cookies["username"] }, (err, doc) => {
+        if (err || doc == undefined) return res.end();
+        if (doc.password != cookies["password"]) return res.end();
+    });
+
+    convDB.find({ "users.name": { $in: [ params["name"] ] } }, (err, docs) => {
+        if (docs.length < 1) return res.end();
+        docs.forEach(doc => {
+            var newDocs = docs.filter(a => { return a.users.some(b => b.name == cookies["username"]) });
+            if (newDocs.length > 0) {
+                return res.send(newDocs);
+            } else {
+                return res.send(cNewDoc());
+            }
+        });
+    });
+});
+*/
+
+var sCookie = require("cookie");
+
+io.on("connection", s => {
+    // console.log(Object.values(io.engine.clients).map(v => sCookie.parse(v.request.headers.cookie || "")));
+    // console.log(Object.keys(io.engine.clients));
+    s.on("sendDM", d => {
+        var cookies = sCookie.parse(d.cookies || "");
+        db.findOne({ username:cookies["username"] }, (err, doc) => {
+            if (doc == undefined || err) return;
+            if (cookies["password"] != doc.password) return;
+
+            io.emit("DM", d.name);
+            convDB.find({ "users.name": { $in: [ d["name"] ] } }, (err, docs) => {
+                if (docs.length < 1) return;
+                docs.forEach(doc => {
+                    var newDocs = docs.filter(a => { return a.users.some(b => b.name == cookies["username"]) });
+                    if (newDocs.length > 0) {
+                        var newDoc = newDocs[0];
+                        var index = newDoc.users.findIndex(a => a.name == cookies["username"]);
+                        var newMsg = { content:d.content, timestamp:new Date().getTime() };
+                        convDB.update({ uuid:newDoc.uuid }, { $push: { [`users.${index}.messages`]: newMsg } });
+                    }
+                });
+            });
+        });
     });
 });

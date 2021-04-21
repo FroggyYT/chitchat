@@ -78,12 +78,36 @@
 }
 
 #mainContainer {
-    width:90%;
+    width:88%;
     left:12%;
     position:absolute;
     top:12.5%;
     height:87.5%;
     overflow:scroll;
+    overflow-x:hidden;
+    -ms-overflow-style:initial;
+    scrollbar-width:15px;
+}
+
+#mainContainer::-webkit-scrollbar {
+    width: 15px;
+}
+
+#mainContainer::-webkit-scrollbar-track {
+    background:rgb(47, 47, 47);
+    border-radius:15px;
+    /* border-style:solid;
+    border-color:rgb(80, 80, 80);
+    border-width:2px; */
+}
+
+#mainContainer::-webkit-scrollbar-thumb {
+    background: rgb(80, 80, 80);
+    border-radius:15px;
+}
+
+#mainContainer::-webkit-scrollbar-thumb:hover {
+    background: gray;
 }
 
 #feedContainer {
@@ -130,7 +154,11 @@
     position:relative;
 }
 
-.feed-card {
+.feed-card  {
+    background-color:rgb(80, 80, 80);
+}
+
+#feedContainer > .feed-card {
     width:40%;
     margin-top:1%;
     height:30%;
@@ -145,26 +173,39 @@
 .feedTopbar {
     width:90%;
     margin-left:5%;
-    margin-top:5%;
+    top:2%;
     height:10%;
     /* padding:10px; */
     color:white;
     font-size:1.2em;
+    position:relative;
 }
 
 .contentEl {
     width:90%;
     margin-left:5%;
-    margin-top:2%;
+    top:2%;
     height:85%;
     color:white;
     overflow:scroll;
     overflow-wrap:break-word;
+    position:relative;
+    font-size:1.5vmin;
 }
 
-.dateEl .authorEl {
+.dateEl, .authorEl, .removeButton {
     margin:0;
     padding:0;
+    font-size:1.7vmin;
+}
+
+.removeButton {
+    color:red;
+}
+
+.removeButton:hover {
+    text-decoration:underline;
+    cursor:pointer;
 }
 
 body {
@@ -186,4 +227,114 @@ body {
     left:0;
     top:0;
     position:absolute;
+}
+
+#profileWrapper {
+    width:80%;
+    height:30%;
+    left:10%;
+    top:1%;
+    position:absolute;
+    background:rgb(80, 80, 80);
+}
+
+#friendsContainer {
+    display:grid;
+    grid-template-columns: auto auto auto;
+    padding:10px;
+    width:100%;
+    height:100%;
+    position:absolute;
+    overflow:scroll;
+    /* justify-content: center; */
+}
+
+.friendCard {
+    height:10ex;
+    position:relative;
+    background:rgb(80, 80, 80);
+    padding:20px;
+    margin:10px;
+    text-align:center;
+    color:white;
+}
+
+.friendCard:hover {
+    background:rgb(60, 60, 60);
+    cursor: pointer;
+}
+
+.friendCard:active {
+    background:rgb(40, 40, 40);
+    cursor: pointer;
+}
+
+.friendCardUserName {
+    font-size:2em;
+}
+
+.authorEl:hover {
+    text-decoration: underline;
+    cursor:pointer;
+}
+
+#profileFeedWrapper {
+    width:80%;
+    left:10%;
+    top:32%;
+    height:67%;
+    position:absolute;
+    display:grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-auto-rows: 40%;
+    /* overflow:scroll; */
+    gap: 5px 5px;
+}
+
+#profileTitle {
+    font-size:3em;
+    color:white;
+}
+
+#friendButton {
+    width:fit-content;
+}
+
+#profileWrapper {
+    padding:10px;
+}
+
+#dmSidebar {
+    width:15%;
+    height:100%;
+    position:absolute;
+    display:grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto auto auto auto auto auto auto auto;
+    overflow:scroll;
+    overflow-x:hidden;
+}
+
+.dm-card {
+    margin:5px;
+    background-color:rgb(80, 80, 80);
+    color:white;
+    text-align:center;
+    font-size:3vmin;
+    height:fit-content;
+}
+
+.dm-card:hover {
+    background-color:rgb(60, 60, 60);
+    cursor:pointer;
+}
+
+.dm-card:active {
+    background-color:rgb(40, 40, 40);
+}
+
+#noConvs {
+    color:white;
+    font-size:larger;
+    text-align:center;
 }

@@ -6,7 +6,13 @@ class El {
         this.e = document.createElement(this.name);
         if (this.append != undefined) this.append.append(this.e);
     }
+
+    remove() {
+        this.e.remove();
+    }
 }
+
+var s = io();
 
 var header = new El("div", document.body);
 header.e.id = "header";
@@ -44,9 +50,9 @@ logoutButton.e.className = "btn rounded card";
 logoutButton.e.textContent = "Logout";
 
 logoutButton.e.addEventListener("click", () => {
-    localStorage.setItem("loggedIn", false);
-    localStorage.setItem("username", null);
-    localStorage.setItem("password", null);
+    document.cookie = "loggedIn=false"; // localStorage.setItem("loggedIn", false);
+    Cookies.remove("username"); // localStorage.setItem("username", null);
+    Cookies.remove("password"); // localStorage.setItem("password", null);
     window.location = "/";
 });
 
@@ -96,8 +102,9 @@ class REL {
 
 
 class FeedCard {
-    constructor(info) {
+    constructor(info, el) {
         this.info = info;
+        this.append = el;
     }
 
     async fetchInfo() {
@@ -116,7 +123,7 @@ class FeedCard {
         this.el = document.createElement("div");
         this.el.id = this.info.id;
         this.el.className = "rounded card feed-card";
-        feedContainer.e.append(this.el);
+        this.append.e.append(this.el);
 
         this.topbar = document.createElement("div");
         this.topbar.className = "feedTopbar";
@@ -130,21 +137,40 @@ class FeedCard {
         this.authorEl.className = "authorEl";
         this.topbar.append(this.authorEl);
 
+        this.authorEl.addEventListener("click", () => {
+            mainConts.forEach(v => v.remove());
+            profileUsername = this.info.author.name;
+            profileContainer.add();
+        });
+
         this.dateEl = document.createElement("a");
         this.dateEl.className = "dateEl";
         this.topbar.append(this.dateEl);
 
-        this.fetchInfo().then(info => {
-            this.authorEl.textContent = info.author.name + " ";
-            this.dateEl.textContent = info.date;
-            this.contentEl.textContent = info.content;
-        });
+        if (Cookies.get("username") == this.info.author.name) {
+            this.rmButton = document.createElement("a");
+            this.rmButton.className = "removeButton";
+            this.rmButton.textContent = "Delete";
+            this.topbar.append(this.rmButton);
+
+            this.rmButton.addEventListener("click", () => {
+                fetch(`/removePost?uuid=${this.info.uuid}&name=${this.info.author.name}`, {"method":"POST"});
+                this.remove();
+            });
+        }
+
+        this.authorEl.textContent = this.info.author.name;
+        this.dateEl.textContent = " "+this.info.date+" ";
+        this.contentEl.textContent = this.info.content;
     }
 
     remove() {
         this.el.remove();
     }
 }
+
+
+
 
 
 
@@ -172,7 +198,7 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
         newFeedInput.value = "";
         var reqData = {
             "method": "post",
-            "body": JSON.stringify({ "name": localStorage.getItem("username"), "auth": { "username": localStorage.getItem("username"), "password": localStorage.getItem("password") }, "content": contentText }),
+            "body": JSON.stringify({ "name": Cookies.get("username"), "auth": { "username": Cookies.get("username"), "password": Cookies.get("password") }, "content": contentText }),
             "headers": { "Content-Type": "application/json" }
         }
 
@@ -193,7 +219,7 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
     .then(resp => resp.json())
     .then(data => {
         data.forEach((v, i) => {
-            var card = new FeedCard(v);
+            var card = new FeedCard(v, feedContainer);
             card.add();
             feedCards.push(card);
         });
@@ -205,32 +231,202 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
 
 
 
+async function getLocalUUID() {
+    var resp = await fetch(`/fetchUserUUID?name=${Cookies.get("username")}`, { "method": "get" });
+    resp = await resp.text();
+    return resp;
+}
 
+
+
+var profileUsername = Cookies.get("username");
+
+
+class FriendCard {
+    constructor(info) {
+        this.info = info;
+    }
+
+    add() {
+        this.e = new El("div", friendsContainer.e);
+        this.e.e.className = "friendCard rounded card";
+        var userName = new El("a", this.e.e);
+        userName.e.textContent = this.info;
+        userName.e.className = "friendCardUserName";
+        this.e.e.addEventListener("click", () => {
+            mainConts.forEach(v => v.remove());
+            profileUsername = this.info;
+            profileContainer.add();
+        });
+    }
+
+    remove() {
+        this.e.remove();
+    }
+}
 
 
 var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {
-    var title = new El("h1", friendsContainer.e);
-    title.e.id = "feedTitle";
-    title.e.textContent = "Friends";
+    fetch(`/getFriends?name=${Cookies.get("username")}`, { "method":"GET" })
+    .then(resp => resp.json())
+    .then(resp => {
+        if (resp.length == 0) {
+            var noFriendsWrapper = new El("center", friendsContainer.e);
+            var noFriendsText = new El("h1", noFriendsWrapper.e);
+            noFriendsText.e.textContent = "You do not have any friends";
+            noFriendsWrapper.e.style = "color:white";
+        } else {
+            resp.forEach((v, i) => {
+                var card = new FriendCard(v);
+                card.add();
+            });
+        }
+    });
 });
 
+
+
+
+
+
+
+class DmCard {
+    constructor(info) {
+        this.info = info;
+    }
+
+    add(parent) {
+        this.e = new El("div", parent.e);
+        this.e.e.className = "rounded card dm-card";
+        this.e.e.id = this.info.uuid;
+
+        this.name = new El("div", this.e.e);
+        this.name.e.className = "dm-name";
+        this.name.e.textContent = this.info.partner;
+    }
+
+    remove() {
+        this.e.remove();
+    }
+}
+
+
+
+
 var dmContainer = new REL("div", mainContainer, "dmContainer", () => {
-    var title = new El("h1", dmContainer.e);
-    title.e.id = "feedTitle";
-    title.e.textContent = "Direct Messages";
+    
+    var dmSidebar = new El("div", dmContainer.e);
+    dmSidebar.e.id = "dmSidebar";
+
+    var dmWrapper = new El("div", dmContainer.e);
+    dmWrapper.e.id = "dmWrapper";
+
+    fetch(`/getConversations`, {"method":"GET", redirect:"follow"})
+    .then(resp => resp.json())
+    .then(resp => {
+        if (resp.length == 0) {
+            var noConvs = new El("a", dmSidebar.e);
+            noConvs.e.id = "noConvs";
+            noConvs.e.textContent = "You have no open conversations";
+        } else {
+            resp.forEach(v => {
+                var card = new DmCard(v);
+                card.add(dmSidebar);
+								card.e.addEventListener("click", () => {
+									
+								});
+            });
+        }
+    })
+    .catch(err => console.error(err));
+
 });
+
+
+
+
+
+
+
+
+
+
+
 
 var chatroomContainer = new REL("div", mainContainer, "chatroomContainer", () => {
     var frame = document.createElement("iframe");
     frame.id = "chatFrame";
-    frame.src = "https://phschat.herokuapp.com/";
+    frame.src = "https://www.pornhub.com/embed/ph57696aef8b5b7";
     chatroomContainer.e.append(frame);
 });
 
+
+
+
+
+
+
+
+
 var profileContainer = new REL("div", mainContainer, "profileContainer", () => {
-    var title = new El("h1", profileContainer.e);
-    title.e.id = "feedTitle";
-    title.e.textContent = "Profile";
+    
+    var profileWrapper = new El("div", profileContainer.e);
+    profileWrapper.e.id = "profileWrapper";
+    profileWrapper.e.className = "rounded card";
+
+    var profileTitle = new El("center", profileWrapper.e);
+    profileTitle.e.id = "profileTitle";
+    profileTitle.e.textContent = profileUsername;
+
+    if (profileUsername != Cookies.get("username")) {
+        var friendButton = new El("button", profileWrapper.e);
+        friendButton.e.id = "friendButton";
+        friendButton.e.className = "btn primary rounded card";
+        friendButton.e.textContent = "Add Friend";
+
+        var isFriend = false;
+
+        fetch(`/getFriends?name=${Cookies.get("username")}`, {"method":"GET"})
+        .then(resp => resp.json())
+        .then(resp => {
+            resp.forEach(v => {
+                if (v == profileUsername) {
+                    isFriend = true;
+                    friendButton.e.textContent = "Remove Friend";
+                }
+            });
+        })
+        .catch(err => console.error(err));
+
+        friendButton.e.addEventListener("click", () => {
+            if (isFriend) {
+                fetch(`/removeFriend?name=${profileUsername}`, {"method":"POST"});
+            } else {
+                fetch(`/addFriend?name=${profileUsername}`, {"method":"POST"});
+            }
+            mainConts.forEach(v => v.remove());
+            profileContainer.add();
+        });
+    }
+
+    var profileFeedWrapper = new El("div", profileContainer.e);
+    profileFeedWrapper.e.id = "profileFeedWrapper";
+
+    fetch(`/getUserFeed?name=${profileUsername}`, {"method":"GET"})
+    .then(resp => resp.json())
+    .then(resp => {
+        resp.forEach((v, i) => {
+            fetch(`/fetchFeedCardInfo?uuid=${v}`, {"method":"GET"})
+            .then(res => res.json())
+            .then(res => {
+                var card = new FeedCard(res, profileFeedWrapper);
+                card.add();
+            })
+            .catch(err => console.error(err));
+        });
+    })
+    .catch(err => console.error(err));
+
 });
 
 var settingsContainer = new REL("div", mainContainer, "settingsContainer", () => {
@@ -241,17 +437,53 @@ var settingsContainer = new REL("div", mainContainer, "settingsContainer", () =>
 
 
 
+var searchContainer = new REL("div", mainContainer, "searchContainer", () => {
+
+});
+
+
 feedContainer.add();
 
 
 
-var mainConts = [ feedContainer, friendsContainer, dmContainer, chatroomContainer, profileContainer, settingsContainer ];
+s.on("newPost", d => {
+    if (document.getElementById("feedContainer")) {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+    
+        feedCards.forEach(v => v.remove());
+        feedCard = [];
+
+        fetch("/fetchFeed", requestOptions)
+        .then(resp => resp.json())
+        .then(data => {
+            data.forEach((v, i) => {
+                var card = new FeedCard(v, feedContainer);
+                card.add();
+                feedCards.push(card);
+            });
+        })
+        .catch(error => console.log('error', error));
+    }
+});
+
+s.on("DM", d => {
+    if (Cookies.get("username") == d) {
+      console.log("Reload DMS");
+      
+    }
+});
+
+
+var mainConts = [ feedContainer, friendsContainer, dmContainer, /*chatroomContainer,*/ profileContainer, settingsContainer, searchContainer ];
 
 var items = [
     new Item("button", sidebar.e, "Feed", "feedButton", () => { mainConts.forEach(v => v.remove()); feedContainer.add(); }),
     new Item("button", sidebar.e, "Friends", "friendsButton", () => { mainConts.forEach(v => v.remove()); friendsContainer.add(); }),
     new Item("button", sidebar.e, "Direct Messages", "dmButton", () => { mainConts.forEach(v => v.remove()); dmContainer.add(); }),
-    new Item("button", sidebar.e, "Chatroom", "chatroomButton", () => { mainConts.forEach(v => v.remove()); chatroomContainer.add(); }),
-    new Item("button", sidebar.e, "Profile", "profileButton", () => { mainConts.forEach(v => v.remove()); profileContainer.add(); }),
+    // new Item("button", sidebar.e, ";)", "chatroomButton", () => { mainConts.forEach(v => v.remove()); chatroomContainer.add(); }),
+    new Item("button", sidebar.e, "Profile", "profileButton", () => { mainConts.forEach(v => v.remove()); profileUsername = Cookies.get("username"); profileContainer.add(); }),
     new Item("button", sidebar.e, "Settings", "settingsButton", () => { mainConts.forEach(v => v.remove()); settingsContainer.add(); })
 ];

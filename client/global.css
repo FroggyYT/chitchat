@@ -11,7 +11,8 @@ body {
 }
 
 *::-webkit-scrollbar {
-    display:none;
+    /* display:none; */
+    width:0;
 }
 
 input {
@@ -98,7 +99,7 @@ button.primary:hover {
     width:50%;
     text-align: right;
     color:rgb(44, 124, 190);
-    font-size:6vmin;
+    font-size:5.5vmin;
     top:0.4em;
     height:1em;
 }
@@ -108,7 +109,7 @@ button.primary:hover {
     left:50%;
     text-align: left;
     color:white;
-    font-size:6vmin;
+    font-size:5.5vmin;
     top:0.4em;
     height:1em;
 }
