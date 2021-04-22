@@ -261,7 +261,7 @@ app.get("/openConversation", (req, res) => {
 
         function cNewDoc() {
             var id = uuidv4();
-            var newDoc = { "uuid": id, "users": [ { "name":cookies["username"], "messages": [] }, { "name":params["name"], "messages": [] } ] };
+            var newDoc = { "uuid": id, "users": [ { "name":cookies["username"], "messages": [], "unreadMessages":false }, { "name":params["name"], "messages": [], "unreadMessages":false } ] };
             convDB.insert(newDoc);
             return newDoc;
         }
@@ -339,10 +339,41 @@ io.on("connection", s => {
                 if (newDocs.length > 0) {
                     var newDoc = newDocs[0];
                     var index = newDoc.users.findIndex(a => a.name == cookies["username"]);
+                    var partnerIndex = newDoc.users.findIndex(a => a.name == d.name);
                     var newMsg = { content:d.content, timestamp:new Date().getTime() };
                     convDB.update({ uuid:newDoc.uuid }, { $push: { [`users.${index}.messages`]: newMsg } });
+                    convDB.update({ uuid:newDoc.uuid }, { $set: { [`users.${partnerIndex}.unreadMessages`]:true } });
                 }
             });
         });
+    });
+});
+
+app.post("/readDM", (req, res) => {
+    var d = req.query;
+    var cookies = req.cookies;
+    convDB.find({ "users.name": { $in: [ d["name"] ] } }, (err, docs) => {
+        if (docs.length < 1) return;
+        var newDocs = docs.filter(a => { return a.users.some(b => b.name == cookies["username"]) });
+        if (newDocs.length > 0) {
+            var newDoc = newDocs[0];
+            var index = newDoc.users.findIndex(a => a.name == cookies["username"]);
+            convDB.update({ uuid:newDoc.uuid }, { $set: { [`users.${index}.unreadMessages`]: false } });
+        }
+    });
+});
+
+app.get("/haveUnreadMessages", (req, res) => {
+    var params = req.query;
+    var cookies = req.cookies;
+
+    convDB.find({ "users.name": { $in: [ cookies["username"] ] } }, (err, docs) => {
+        if (docs.length < 1 || err) return res.send(false);
+        var boolCheck = false;
+        docs.forEach(v => {
+            var userIndex = v.users.findIndex(a => a.name == cookies["username"]);
+            if (v.users[userIndex].unreadMessages) boolCheck = true;
+        });
+        return res.send(boolCheck);
     });
 });

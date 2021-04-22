@@ -355,6 +355,9 @@ class DmCard {
                     s.emit("sendDM", {"name":this.info.partner, "content":textbox.e.value});
                     textbox.e.value = "";
                 }
+
+                fetch(`/readDM?name=${this.info.partner}`, {method:"POST"});
+                unreadBubble.e.className = "unreadBubble unreadBubble-nonoti";
             })
             .catch(err => console.error(err));
         });
@@ -591,13 +594,6 @@ s.on("newPost", d => {
     }
 });
 
-s.on("DM", d => {
-    if (Cookies.get("username") == d[0] || Cookies.get("username") == d[1]) {
-        currentDmCard.e.click();
-        document.getElementById("dmWrapper").scrollTop = document.getElementById("dmWrapper").scrollHeight;
-    }
-});
-
 
 var mainConts = [ feedContainer, friendsContainer, dmContainer, /*chatroomContainer,*/ profileContainer, settingsContainer, searchTabContainer ];
 
@@ -609,3 +605,29 @@ var items = [
     new Item("button", sidebar.e, "Profile", "profileButton", () => { mainConts.forEach(v => v.remove()); mainContainer.e.className = ""; profileUsername = Cookies.get("username"); profileContainer.add(); }),
     new Item("button", sidebar.e, "Settings", "settingsButton", () => { mainConts.forEach(v => v.remove()); mainContainer.e.className = ""; settingsContainer.add(); })
 ];
+
+var unreadBubble = new El("div", document.getElementById("dmButton"));
+unreadBubble.e.id = "mainBubble";
+unreadBubble.e.className = "unreadBubble unreadBubble-nonoti";
+
+fetch("/haveUnreadMessages", {method:"GET"})
+.then(r => r.json())
+.then(r => {
+    if (r) {
+        unreadBubble.e.className = "unreadBubble unreadBubble-noti";
+    }
+})
+.catch(err => console.error(err));
+
+s.on("DM", d => {
+    if (Cookies.get("username") == d[1] || Cookies.get("username") == d[0]) {
+        if (Cookies.get("username") == d[0]) {
+            document.getElementById("mainBubble").setAttribute("class", "unreadBubble unreadBubble-noti");
+        }
+
+        if (document.getElementById("dmWrapper") != undefined) {
+            currentDmCard.e.click();
+            document.getElementById("dmWrapper").scrollTop = document.getElementById("dmWrapper").scrollHeight;
+        }
+    }
+});

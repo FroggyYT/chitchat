@@ -453,3 +453,20 @@ body {
     overflow:scroll;
     /* justify-content: center; */
 }
+
+.unreadBubble {
+    border-radius:50%;
+    width:10px;
+    height:10px;
+    position:absolute;
+    left:85%;
+    transform:translateY(-300%);
+}
+
+.unreadBubble-noti {
+    background-color:rgb(44, 124, 190);
+}
+
+.unreadBubble-nonoti {
+    background-color:rgba(0, 0, 0, 0);
+}
