@@ -4,6 +4,4 @@
 {"username":"bkbarrier","password":"aholein1","feedPosts":[],"friends":["michelle","cathy"],"uuid":"2d59b0bc-c529-40a5-8516-7f702b0076b9","_id":"FsY0NZVIxQrkkndb"}
 {"username":"cathy","password":"mustang1","feedPosts":[],"friends":["luke"],"uuid":"ee851fb9-abe0-4643-b139-dc79c0cd2638","_id":"QWRsQ1xIUiL0WKQA"}
 {"username":"admin","password":"test","feedPosts":[],"friends":["luke"],"uuid":"fdf41d2b-c7fb-4f60-a923-d74838e154b9","_id":"l589jk61C2Kd0mer"}
-{"username":"luke","password":"lukebb0215","feedPosts":["070e082d-19a8-4607-adf1-28338111460d"],"friends":["GeMCRaViNE","Chunky","admin","bkbarrier"],"uuid":"40af0cd9-364b-4883-ba5c-e0c76a1d97fe","_id":"lXIE9HYc9136wOhr"}
-{"username":"luke","password":"lukebb0215","feedPosts":["070e082d-19a8-4607-adf1-28338111460d"],"friends":["GeMCRaViNE","Chunky","admin","bkbarrier","cathy"],"uuid":"40af0cd9-364b-4883-ba5c-e0c76a1d97fe","_id":"lXIE9HYc9136wOhr"}
 {"username":"luke","password":"lukebb0215","feedPosts":["070e082d-19a8-4607-adf1-28338111460d"],"friends":["GeMCRaViNE","Chunky","admin","bkbarrier","cathy","michelle"],"uuid":"40af0cd9-364b-4883-ba5c-e0c76a1d97fe","_id":"lXIE9HYc9136wOhr"}
