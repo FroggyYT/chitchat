@@ -40,8 +40,6 @@
 }
 
 #header {
-    border-radius: 8px 8px 8px 0px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     z-index:10;
 }
 
@@ -52,7 +50,6 @@
     left:0;
     height:87.5%;
     width:12%;
-    border-radius:0px 0px 8px 8px;
     z-index:9;
 }
 
@@ -89,8 +86,19 @@
     scrollbar-width:15px;
 }
 
+#mainContainer.no-scroll {
+    overflow:hidden;
+    overflow-x:hidden;
+    -ms-overflow-style:none;
+    scrollbar-width:0px;
+}
+
 #mainContainer::-webkit-scrollbar {
     width: 15px;
+}
+
+#mainContainer.no-scroll::-webkit-scrollbar {
+    width: 0px;
 }
 
 #mainContainer::-webkit-scrollbar-track {
@@ -298,6 +306,12 @@ body {
 
 #friendButton {
     width:fit-content;
+    margin:10px;
+}
+
+#openDM {
+    width:fit-content;
+    margin:10px;
 }
 
 #profileWrapper {
@@ -313,6 +327,74 @@ body {
     grid-template-rows: auto auto auto auto auto auto auto auto auto auto;
     overflow:scroll;
     overflow-x:hidden;
+    background-color:rgb(57, 57, 57);
+}
+
+#dmWrapper {
+    width:85%;
+    left:15%;
+    height:90%;
+    position:absolute;
+    overflow:scroll;
+    overflow-x:hidden;
+    -ms-overflow-style:initial;
+    scrollbar-width:15px;
+}
+
+#dmWrapper::-webkit-scrollbar {
+    width: 15px;
+}
+
+#dmWrapper::-webkit-scrollbar-track {
+    background:rgb(47, 47, 47);
+    border-radius:15px;
+    /* border-style:solid;
+    border-color:rgb(80, 80, 80);
+    border-width:2px; */
+}
+
+#dmWrapper::-webkit-scrollbar-thumb {
+    background: rgb(80, 80, 80);
+    border-radius:15px;
+}
+
+#dmWrapper ::-webkit-scrollbar-thumb:hover {
+    background: gray;
+}
+
+
+
+
+
+
+
+
+#dmFooter {
+    width:85%;
+    left:15%;
+    height:10%;
+    top:90%;
+    position:absolute;
+    background-color:rgb(100, 100, 100);
+    display:grid;
+    grid-template-columns: 90% 10%;
+}
+
+#dmTextbox {
+    margin:10px;
+    border-radius: 8px 0px 0px 8px; 
+    border-right:none;
+    border-width:2px;
+}
+
+#dmFButton {
+    margin:10px;
+    font-size:larger;
+    margin-left:-10px;
+    border-radius: 0px 8px 8px 0px;
+    border-left:none;
+    border-color:rgb(44, 124, 190);
+    border-width:2px;
 }
 
 .dm-card {
@@ -337,4 +419,37 @@ body {
     color:white;
     font-size:larger;
     text-align:center;
+}
+
+.msgWrapper {
+    width:40%;
+    height:fit-content;
+    margin:10px;
+    padding:10px;
+}
+
+.msgAuthor {
+    font-size:large;
+}
+
+.msgWrapper-partner {
+    background-color:white;
+}
+
+.msgWrapper-self {
+    background-color:rgb(44, 124, 190);
+    color:white;
+    margin-left:60%;
+    transform:translateX(-10px);
+}
+
+#searchTabContainer {
+    display:grid;
+    grid-template-columns: auto auto auto;
+    padding:10px;
+    width:100%;
+    height:100%;
+    position:absolute;
+    overflow:scroll;
+    /* justify-content: center; */
 }

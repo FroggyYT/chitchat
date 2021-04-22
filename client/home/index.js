@@ -16,12 +16,13 @@ var s = io();
 
 var header = new El("div", document.body);
 header.e.id = "header";
-// header.e.className = "rounded card";
-var headerShadow = new El("div", header.e);
-headerShadow.e.id = "headerShadow";
+header.e.className = "card";
 
 var titleContainer = new El("div", header.e);
 titleContainer.e.id = "titleContainer";
+
+// var subTitleContainer = new El("div", titleContainer);
+// subTitleContainer.e.id = "subTitleContainer";
 
 var title1 = new El("a", titleContainer.e);
 title1.e.textContent = "Chit";
@@ -37,7 +38,7 @@ searchContainer.e.className = "rounded card";
 
 var searchBar = new El("input", searchContainer.e);
 searchBar.e.id = "searchBar";
-searchBar.e.placeholder = "Search";
+searchBar.e.placeholder = "Search Users";
 
 var searchButton = new El("button", searchContainer.e);
 searchButton.e.id = "searchButton";
@@ -58,7 +59,7 @@ logoutButton.e.addEventListener("click", () => {
 
 var sidebar = new El("div", document.body);
 sidebar.e.id = "sidebar"
-sidebar.e.className = "rounded card";
+sidebar.e.className = "card";
 
 class Item {
     constructor(name, append, title, id, fun) {
@@ -288,14 +289,25 @@ var friendsContainer = new REL("div", mainContainer, "friendsContainer", () => {
 
 
 
+function sortMessages(conv) {
+    this.a = conv.users[0].messages;
+    this.b = conv.users[1].messages;
+    this.c = this.a.concat(this.b);
 
+    this.a.forEach(v => v["author"] = conv.users[0].name);
+    this.b.forEach(v => v["author"] = conv.users[1].name);
+
+    return this.c.sort((a, b) => a.timestamp - b.timestamp);
+}
+
+var currentDmCard;
 
 class DmCard {
     constructor(info) {
         this.info = info;
     }
 
-    add(parent) {
+    add(parent, wrapper, textbox, sendbutton) {
         this.e = new El("div", parent.e);
         this.e.e.className = "rounded card dm-card";
         this.e.e.id = this.info.uuid;
@@ -303,6 +315,49 @@ class DmCard {
         this.name = new El("div", this.e.e);
         this.name.e.className = "dm-name";
         this.name.e.textContent = this.info.partner;
+
+
+        this.e.e.addEventListener("click", () => {
+            currentDmCard = this.e;
+            wrapper.e.innerHTML = "";
+            fetch(`/openConversation?name=${this.info.partner}`)
+            .then(r => r.json())
+            .then(r => {
+                var sortedMsgs = sortMessages(r[0]);
+
+                sortedMsgs.forEach(v => {
+                    var msgWrapper = new El("div", wrapper.e);
+
+                    var msgTopbar = new El("div", msgWrapper.e);
+                    msgTopbar.e.className = "msgTopbar";
+
+                    var msgAuthor = new El("a", msgTopbar.e);
+                    msgAuthor.e.className = "msgAuthor";
+                    msgAuthor.e.textContent = v.author;
+
+                    var msgContentWrapper = new El("div", msgWrapper.e);
+                    msgContentWrapper.e.className = "msgContentWrapper";
+
+                    var msgContent = new El("a", msgContentWrapper.e);
+                    msgContent.e.className = "msgContent";
+                    msgContent.e.textContent = v.content;
+
+                    // v.author v.content
+                    if (v.author == Cookies.get("username")) {
+                        msgWrapper.e.className = "msgWrapper msgWrapper-self rounded card";
+                    } else {
+                        msgWrapper.e.className = "msgWrapper msgWrapper-partner rounded card";
+                    }
+                });
+                wrapper.e.scrollTop = wrapper.e.scrollHeight;
+
+                sendbutton.e.onclick = () => {
+                    s.emit("sendDM", {"name":this.info.partner, "content":textbox.e.value});
+                    textbox.e.value = "";
+                }
+            })
+            .catch(err => console.error(err));
+        });
     }
 
     remove() {
@@ -317,9 +372,22 @@ var dmContainer = new REL("div", mainContainer, "dmContainer", () => {
     
     var dmSidebar = new El("div", dmContainer.e);
     dmSidebar.e.id = "dmSidebar";
+    dmSidebar.e.className = "card";
 
     var dmWrapper = new El("div", dmContainer.e);
     dmWrapper.e.id = "dmWrapper";
+
+    var dmFooter = new El("div", dmContainer.e);
+    dmFooter.e.id = "dmFooter";
+
+    var dmTextbox = new El("textarea", dmFooter.e);
+    dmTextbox.e.id = "dmTextbox";
+    dmTextbox.e.className = "rounded card";
+    
+    var dmFButton = new El("button", dmFooter.e);
+    dmFButton.e.id = "dmFButton";
+    dmFButton.e.className = "btn rounded card";
+    dmFButton.e.textContent = "Send";
 
     fetch(`/getConversations`, {"method":"GET", redirect:"follow"})
     .then(resp => resp.json())
@@ -331,15 +399,11 @@ var dmContainer = new REL("div", mainContainer, "dmContainer", () => {
         } else {
             resp.forEach(v => {
                 var card = new DmCard(v);
-                card.add(dmSidebar);
-								card.e.addEventListener("click", () => {
-									
-								});
+                card.add(dmSidebar, dmWrapper, dmTextbox, dmFButton);
             });
         }
     })
     .catch(err => console.error(err));
-
 });
 
 
@@ -384,6 +448,11 @@ var profileContainer = new REL("div", mainContainer, "profileContainer", () => {
         friendButton.e.className = "btn primary rounded card";
         friendButton.e.textContent = "Add Friend";
 
+        var openDM = new El("button", profileWrapper.e);
+        openDM.e.id = "openDM";
+        openDM.e.className = "btn primary rounded card";
+        openDM.e.textContent = "Direct Message";
+
         var isFriend = false;
 
         fetch(`/getFriends?name=${Cookies.get("username")}`, {"method":"GET"})
@@ -406,6 +475,15 @@ var profileContainer = new REL("div", mainContainer, "profileContainer", () => {
             }
             mainConts.forEach(v => v.remove());
             profileContainer.add();
+        });
+        
+        openDM.e.addEventListener("click", () => {
+            fetch(`/openConversation?name=${profileUsername}`, {"method": "GET"})
+            .then(() => {
+                mainConts.forEach(v => v.remove());
+                dmContainer.add();
+            })
+            .catch(err => console.error(err));
         });
     }
 
@@ -437,9 +515,53 @@ var settingsContainer = new REL("div", mainContainer, "settingsContainer", () =>
 
 
 
-var searchContainer = new REL("div", mainContainer, "searchContainer", () => {
 
+class SearchCard {
+    constructor(info) {
+        this.info = info;
+    }
+
+    add(parent) {
+        this.e = new El("div", parent.e);
+        this.e.e.className = "friendCard rounded card";
+        var userName = new El("a", this.e.e);
+        userName.e.textContent = this.info;
+        userName.e.className = "friendCardUserName";
+        this.e.e.addEventListener("click", () => {
+            mainConts.forEach(v => v.remove());
+            profileUsername = this.info;
+            profileContainer.add();
+        });
+    }
+
+    remove() {
+        this.e.remove();
+    }
+}
+
+
+
+var searchTabContainer = new REL("div", mainContainer, "searchTabContainer", () => {
+    fetch(`/searchUser?name=${searchBar.e.value}`, {method:"GET"})
+    .then(r => r.json())
+    .then(r => {
+        r.forEach(v => {
+            var card = new SearchCard(v.username);
+            card.add(searchTabContainer);
+        });
+    })
+    .catch(err => console.error(err));
 });
+
+
+searchButton.e.onclick = () => {
+    mainConts.forEach(v => v.remove());
+    searchTabContainer.add();
+}
+
+
+
+
 
 
 feedContainer.add();
@@ -454,7 +576,7 @@ s.on("newPost", d => {
         };
     
         feedCards.forEach(v => v.remove());
-        feedCard = [];
+        feedCards = [];
 
         fetch("/fetchFeed", requestOptions)
         .then(resp => resp.json())
@@ -470,20 +592,20 @@ s.on("newPost", d => {
 });
 
 s.on("DM", d => {
-    if (Cookies.get("username") == d) {
-      console.log("Reload DMS");
-      
+    if (Cookies.get("username") == d[0] || Cookies.get("username") == d[1]) {
+        currentDmCard.e.click();
+        document.getElementById("dmWrapper").scrollTop = document.getElementById("dmWrapper").scrollHeight;
     }
 });
 
 
-var mainConts = [ feedContainer, friendsContainer, dmContainer, /*chatroomContainer,*/ profileContainer, settingsContainer, searchContainer ];
+var mainConts = [ feedContainer, friendsContainer, dmContainer, /*chatroomContainer,*/ profileContainer, settingsContainer, searchTabContainer ];
 
 var items = [
-    new Item("button", sidebar.e, "Feed", "feedButton", () => { mainConts.forEach(v => v.remove()); feedContainer.add(); }),
-    new Item("button", sidebar.e, "Friends", "friendsButton", () => { mainConts.forEach(v => v.remove()); friendsContainer.add(); }),
-    new Item("button", sidebar.e, "Direct Messages", "dmButton", () => { mainConts.forEach(v => v.remove()); dmContainer.add(); }),
+    new Item("button", sidebar.e, "Feed", "feedButton", () => { mainConts.forEach(v => v.remove()); mainContainer.e.className = ""; feedContainer.add(); }),
+    new Item("button", sidebar.e, "Friends", "friendsButton", () => { mainConts.forEach(v => v.remove()); mainContainer.e.className = ""; friendsContainer.add(); }),
+    new Item("button", sidebar.e, "Direct Messages", "dmButton", () => { mainConts.forEach(v => v.remove()); dmContainer.add(); mainContainer.e.className = "no-scroll"; }),
     // new Item("button", sidebar.e, ";)", "chatroomButton", () => { mainConts.forEach(v => v.remove()); chatroomContainer.add(); }),
-    new Item("button", sidebar.e, "Profile", "profileButton", () => { mainConts.forEach(v => v.remove()); profileUsername = Cookies.get("username"); profileContainer.add(); }),
-    new Item("button", sidebar.e, "Settings", "settingsButton", () => { mainConts.forEach(v => v.remove()); settingsContainer.add(); })
+    new Item("button", sidebar.e, "Profile", "profileButton", () => { mainConts.forEach(v => v.remove()); mainContainer.e.className = ""; profileUsername = Cookies.get("username"); profileContainer.add(); }),
+    new Item("button", sidebar.e, "Settings", "settingsButton", () => { mainConts.forEach(v => v.remove()); mainContainer.e.className = ""; settingsContainer.add(); })
 ];

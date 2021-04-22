@@ -27,6 +27,7 @@ textarea {
     padding:10px;
     border-style:solid;
     border-color:rgb(44, 124, 190);
+    resize:none;
 }
 
 button.btn {
@@ -94,7 +95,7 @@ button.primary:hover {
     height:100%;
 }
 
-#title3 {
+/* #title3 {
     position: absolute;
     width:50%;
     text-align: right;
@@ -112,12 +113,27 @@ button.primary:hover {
     font-size:5.5vmin;
     top:0.4em;
     height:1em;
+} */
+
+/* #subTitleContainer {
+
+} */
+
+#title3 {
+    position: relative;
+    color:rgb(44, 124, 190);
+    font-size:5.5vmin;
+}
+#title4 {
+    position: relative;
+    color:white;
+    font-size:5.5vmin;
 }
 
 #titleContainer {
     position:absolute;
     width:15%;
-    left:0;
-    top:0;
-    height:100%;
+    height:fit-content;
+    top:50%;
+    transform:translateY(-50%);
 }

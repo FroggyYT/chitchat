@@ -3,8 +3,8 @@ var app = express();
 var server = require("http").Server(app);
 server.listen(process.env.PORT || 80, () => console.log("Server Started!"));
 
-var io = require("socket.io")(server, { cors: { origins: ["http://lukeddns.ddns.net"] } });
-// var io = require("socket.io")(server);
+// var io = require("socket.io")(server, { cors: { origins: ["http://lukeddns.ddns.net"] } });
+var io = require("socket.io")(server);
 
 var cookieParser = require("cookie-parser");
 
@@ -28,14 +28,13 @@ convDB.loadDatabase();
 app.use("/", express.static(`${__dirname}/client`));
 app.use(cookieParser());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', "*");
-  res.header("Access-Control-Allow-Credentials", "true")
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', "*");
+//   res.header("Access-Control-Allow-Credentials", "true")
+//   next();
+// });
 
 app.get("/", (req, res) => {
-    var params = req.query;
     if (req.cookies["loggedIn"] == "true" && req.cookies["username"] != undefined && req.cookies["password"] != undefined) {
         db.find({ username:req.cookies["username"] }, (err, docs) => {
             if (docs.length != 1) return res.send("Username Not Found");
@@ -151,7 +150,7 @@ app.get("/searchUser", (req, res) => {
             var users = [];
 
             docs.forEach((v, i) => {
-                if (new RegExp(params["name"]).test(v.username)) users.push({ username: v.username, uuid: v.uuid });
+                if (new RegExp(params["name"], "i").test(v.username)) users.push({ username: v.username, uuid: v.uuid });
             });
 
             res.send(users);
@@ -243,7 +242,10 @@ app.post("/removePost", (req, res) => {
         var _doc = _docs[0];
         if (_doc.password != cookies["password"]) return res.end();
 
-        if (params["name"] == cookies["username"]) feedDB.remove({ uuid: params["uuid"] });
+        if (params["name"] == cookies["username"]) {
+            feedDB.remove({ uuid: params["uuid"] });
+            db.update({ username:cookies.username }, { $pull: { feedPosts: params["uuid"] } });
+        }
         io.emit("newPost");
     });
 });
@@ -252,7 +254,7 @@ app.get("/openConversation", (req, res) => {
     var params = req.query;
     var cookies = req.cookies;
     if (params["name"] == undefined) return res.end();
-
+    
     db.findOne({ username: cookies["username"] }, (err2, doc2) => {
         if (err2 || doc2 == undefined) return res.end();
         if (doc2.password != cookies["password"]) return res.end();
@@ -266,33 +268,30 @@ app.get("/openConversation", (req, res) => {
 
         convDB.find({ "users.name": { $in: [ params["name"] ] } }, (err, docs) => {
             if (docs.length < 1) return res.send(cNewDoc());
-            docs.forEach(doc => {
-                var newDocs = docs.filter(a => { return a.users.some(b => b.name == cookies["username"]) });
-                if (newDocs.length > 0) {
-                    return res.send(newDocs);
-                } else {
-                    return res.send(cNewDoc());
-                }
-            });
+            
+            var newDocs = docs.filter(a => { return a.users.some(b => b.name == cookies["username"]) });
+            if (newDocs.length > 0) {
+                return res.send(newDocs);
+            } else {
+                return res.send(cNewDoc());
+            }
         });
     });
 });
 
 app.get("/getConversations", (req, res) => {
     var cookies = req.cookies;
-    console.log(cookies);
 
     db.findOne({ username: cookies["username"] }, (err2, doc2) => {
 	    if (err2 || doc2 == undefined) return res.end();
-      if (doc2.password != cookies["password"]) return res.end();
+
+        if (doc2.password != cookies["password"]) return res.end();
 
     	convDB.find({ "users.name": { $in: [ cookies["username"] ] } }, (err, docs) => {
-        console.log("3");
 		    if (docs.length < 1 || err) return res.send([]);
-        var convs = docs.map(doc => { return { "uuid": doc.uuid, "partner": doc.users.filter(a => a.name != cookies["username"])[0].name } });
-        if (convs.length < 1) return res.end();
-		    console.log(convs);
-        return res.send(convs);
+            var convs = docs.map(doc => { return { "uuid": doc.uuid, "partner": doc.users.filter(a => a.name != cookies["username"])[0].name } });
+            if (convs.length < 1) return res.end();
+            return res.send(convs);
     	});
     });
 });
@@ -328,23 +327,21 @@ io.on("connection", s => {
     // console.log(Object.values(io.engine.clients).map(v => sCookie.parse(v.request.headers.cookie || "")));
     // console.log(Object.keys(io.engine.clients));
     s.on("sendDM", d => {
-        var cookies = sCookie.parse(d.cookies || "");
-        db.findOne({ username:cookies["username"] }, (err, doc) => {
-            if (doc == undefined || err) return;
-            if (cookies["password"] != doc.password) return;
+        var cookies = sCookie.parse(s.request.headers.cookie || "");
+        db.findOne({ username:cookies["username"] }, (err2, doc2) => {
+            if (doc2 == undefined || err2) return;
+            if (cookies["password"] != doc2.password) return;
 
-            io.emit("DM", d.name);
+            io.emit("DM", [d.name,cookies.username]);
             convDB.find({ "users.name": { $in: [ d["name"] ] } }, (err, docs) => {
                 if (docs.length < 1) return;
-                docs.forEach(doc => {
-                    var newDocs = docs.filter(a => { return a.users.some(b => b.name == cookies["username"]) });
-                    if (newDocs.length > 0) {
-                        var newDoc = newDocs[0];
-                        var index = newDoc.users.findIndex(a => a.name == cookies["username"]);
-                        var newMsg = { content:d.content, timestamp:new Date().getTime() };
-                        convDB.update({ uuid:newDoc.uuid }, { $push: { [`users.${index}.messages`]: newMsg } });
-                    }
-                });
+                var newDocs = docs.filter(a => { return a.users.some(b => b.name == cookies["username"]) });
+                if (newDocs.length > 0) {
+                    var newDoc = newDocs[0];
+                    var index = newDoc.users.findIndex(a => a.name == cookies["username"]);
+                    var newMsg = { content:d.content, timestamp:new Date().getTime() };
+                    convDB.update({ uuid:newDoc.uuid }, { $push: { [`users.${index}.messages`]: newMsg } });
+                }
             });
         });
     });
