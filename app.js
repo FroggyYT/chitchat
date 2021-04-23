@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 var server = require("http").Server(app);
-server.listen(process.env.PORT || 3000, () => console.log("Server Started!"));
+server.listen(process.env.PORT || 80, () => console.log("Server Started!"));
 
 // var io = require("socket.io")(server, { cors: { origins: ["http://lukeddns.ddns.net"] } });
 var io = require("socket.io")(server);
@@ -200,6 +200,8 @@ app.post("/addFriend", (req, res) => {
             }
         });
     });
+
+    res.end();
 });
 
 app.post("/removeFriend", (req, res) => {
@@ -218,6 +220,8 @@ app.post("/removeFriend", (req, res) => {
             db.update({ username:cookies["username"] }, { $pull: { friends:doc.username } }, {});
         });
     });
+
+    res.end();
 });
 
 app.get("/getUserFeed", (req, res) => {

@@ -305,6 +305,7 @@ var currentDmCard;
 class DmCard {
     constructor(info) {
         this.info = info;
+        this.e = undefined;
     }
 
     add(parent, wrapper, textbox, sendbutton) {
@@ -368,8 +369,7 @@ class DmCard {
     }
 }
 
-
-
+var dmCards = [];
 
 var dmContainer = new REL("div", mainContainer, "dmContainer", () => {
     
@@ -400,10 +400,14 @@ var dmContainer = new REL("div", mainContainer, "dmContainer", () => {
             noConvs.e.id = "noConvs";
             noConvs.e.textContent = "You have no open conversations";
         } else {
+            dmCards.forEach(v => v.remove());
+            dmCards = [];
             resp.forEach(v => {
                 var card = new DmCard(v);
                 card.add(dmSidebar, dmWrapper, dmTextbox, dmFButton);
+                dmCards.push(card);
             });
+            dmCards[0].e.e.click();
         }
     })
     .catch(err => console.error(err));
@@ -472,12 +476,17 @@ var profileContainer = new REL("div", mainContainer, "profileContainer", () => {
 
         friendButton.e.addEventListener("click", () => {
             if (isFriend) {
-                fetch(`/removeFriend?name=${profileUsername}`, {"method":"POST"});
+                fetch(`/removeFriend?name=${profileUsername}`, {"method":"POST"}).then(() => {
+                    mainConts.forEach(v => v.remove());
+                    profileContainer.add();
+                });
             } else {
-                fetch(`/addFriend?name=${profileUsername}`, {"method":"POST"});
+                fetch(`/addFriend?name=${profileUsername}`, {"method":"POST"}).then(() => {
+                    mainConts.forEach(v => v.remove());
+                    profileContainer.add();
+                });
             }
-            mainConts.forEach(v => v.remove());
-            profileContainer.add();
+            
         });
         
         openDM.e.addEventListener("click", () => {
