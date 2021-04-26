@@ -1,177 +1,180 @@
 #searchContainer {
-    position:absolute;
-    width:50%;
-    left:25%;
-    height:50%;
-    top:25%;
+	position: absolute;
+	width: 50%;
+	left: 25%;
+	height: 50%;
+	top: 25%;
 }
 
 #searchBar {
-    position:absolute;
-    height:100%;
-    width:90%;
-    left:0;
-    top:0;
-    font-size:3vmin;
-    border-radius:8px 0px 0px 8px;
-    border-right-style:none;
-    background-color: rgb(60, 60, 60);
-    color:white;
+	position: absolute;
+	height: 100%;
+	width: 90%;
+	left: 0;
+	top: 0;
+	font-size: 3vmin;
+	border-radius: 8px 0px 0px 8px;
+	border-right-style: none;
+	background-color: rgb(60, 60, 60);
+	color: white;
 }
 
 #searchButton {
-    position:absolute;
-    height:100%;
-    width:10%;
-    left:90%;
-    top:0;
-    font-size:3vmin;
-    border-radius:0px 8px 8px 0px;
-    border-style:none;
+	position: absolute;
+	height: 100%;
+	width: 10%;
+	left: 90%;
+	top: 0;
+	font-size: 3vmin;
+	border-radius: 0px 8px 8px 0px;
+	border-style: none;
 }
 
 #logoutButton {
-    position: absolute;
-    height:40%;
-    top:30%;
-    width:8%;
-    left:90%;
-    font-size:2vmin
+	position: absolute;
+	height: 40%;
+	top: 30%;
+	width: 8%;
+	left: 90%;
+	font-size: 2vmin
 }
 
 #header {
-    z-index:10;
+	z-index: 10;
 }
 
 #sidebar {
-    background-color:rgb(100, 100, 100);
-    position:absolute;
-    top:12.5%;
-    left:0;
-    height:87.5%;
-    width:12%;
-    z-index:9;
+	background-color: rgb(100, 100, 100);
+	position: absolute;
+	top: 12.5%;
+	left: 0;
+	height: 87.5%;
+	width: 12%;
+	z-index: 9;
 }
 
 .sidebar-item {
-    width:100%;
-    height:8%;
-    font-size:2vmin;
-    background-color:rgb(100, 100, 100);
-    color:white;
-    border-style:none;
-    outline:none;
-    border-bottom-style:solid;
-    border-color:rgb(40, 40, 40);
+	width: 100%;
+	height: 8%;
+	font-size: 2vmin;
+	background-color: rgb(100, 100, 100);
+	color: white;
+	border-style: none;
+	outline: none;
+	border-bottom-style: solid;
+	border-color: rgb(40, 40, 40);
 }
+
 .sidebar-item:hover {
-    background-color:rgb(80, 80, 80);
+	background-color: rgb(80, 80, 80);
 }
+
 .sidebar-item:active {
-    background-color:rgb(60, 60, 60);
+	background-color: rgb(60, 60, 60);
 }
+
 .sidebar-item:last-child {
-    border-bottom-style:none;
+	border-bottom-style: none;
 }
 
 #mainContainer {
-    width:88%;
-    left:12%;
-    position:absolute;
-    top:12.5%;
-    height:87.5%;
-    overflow:scroll;
-    overflow-x:hidden;
-    -ms-overflow-style:initial;
-    scrollbar-width:15px;
+	width: 88%;
+	left: 12%;
+	position: absolute;
+	top: 12.5%;
+	height: 87.5%;
+	overflow: scroll;
+	overflow-x: hidden;
+	-ms-overflow-style: initial;
+	scrollbar-width: 15px;
 }
 
 #mainContainer.no-scroll {
-    overflow:hidden;
-    overflow-x:hidden;
-    -ms-overflow-style:none;
-    scrollbar-width:0px;
+	overflow: hidden;
+	overflow-x: hidden;
+	-ms-overflow-style: none;
+	scrollbar-width: 0px;
 }
 
 #mainContainer::-webkit-scrollbar {
-    width: 15px;
+	width: 15px;
 }
 
 #mainContainer.no-scroll::-webkit-scrollbar {
-    width: 0px;
+	width: 0px;
 }
 
 #mainContainer::-webkit-scrollbar-track {
-    background:rgb(47, 47, 47);
-    border-radius:15px;
-    /* border-style:solid;
+	background: rgb(47, 47, 47);
+	border-radius: 15px;
+	/* border-style:solid;
     border-color:rgb(80, 80, 80);
     border-width:2px; */
 }
 
 #mainContainer::-webkit-scrollbar-thumb {
-    background: rgb(80, 80, 80);
-    border-radius:15px;
+	background: rgb(80, 80, 80);
+	border-radius: 15px;
 }
 
 #mainContainer::-webkit-scrollbar-thumb:hover {
-    background: gray;
+	background: gray;
 }
 
 #feedContainer {
-    width:100%;
-    top:0;
-    height:100%;
-    left:0;
-    position:absolute;
+	width: 100%;
+	top: 0;
+	height: 100%;
+	left: 0;
+	position: absolute;
 }
 
 #feedTitle {
-    width:100%;
-    top:10%;
-    height:30%;
-    left:0;
-    position:absolute;
-    text-align: center;
-    color:white;
-    font-size:2em;
+	width: 100%;
+	top: 10%;
+	height: 30%;
+	left: 0;
+	position: absolute;
+	text-align: center;
+	color: white;
+	font-size: 2em;
 }
 
 #newFeed {
-    width:40%;
-    margin-top:2%;
-    margin-bottom:4%;
-    height:30%;
-    margin-left:30%;
-    background-color: rgb(80, 80, 80);
+	width: 40%;
+	margin-top: 2%;
+	margin-bottom: 4%;
+	height: 30%;
+	margin-left: 30%;
+	background-color: rgb(80, 80, 80);
 }
 
 #newFeedInput {
-    width:90%;
-    left:5%;
-    height:70%;
-    top:5%;
-    position:relative;
+	width: 90%;
+	left: 5%;
+	height: 70%;
+	top: 5%;
+	position: relative;
 }
 
 #newFeedPostButton {
-    width:20%;
-    left:75%;
-    top:5%;
-    height:15%;
-    position:relative;
+	width: 20%;
+	left: 75%;
+	top: 5%;
+	height: 15%;
+	position: relative;
 }
 
-.feed-card  {
-    background-color:rgb(80, 80, 80);
+.feed-card {
+	background-color: rgb(80, 80, 80);
 }
 
-#feedContainer > .feed-card {
-    width:40%;
-    margin-top:1%;
-    height:30%;
-    margin-left:30%;
-    background-color:rgb(80, 80, 80);
+#feedContainer>.feed-card {
+	width: 40%;
+	margin-top: 1%;
+	height: 30%;
+	margin-left: 30%;
+	background-color: rgb(80, 80, 80);
 }
 
 /*#newFeedTextCount {
@@ -179,294 +182,364 @@
 }*/
 
 .feedTopbar {
-    width:90%;
-    margin-left:5%;
-    top:2%;
-    height:10%;
-    /* padding:10px; */
-    color:white;
-    font-size:1.2em;
-    position:relative;
+	width: 90%;
+	margin-left: 5%;
+	top: 2%;
+	height: 10%;
+	/* padding:10px; */
+	color: white;
+	font-size: 1.2em;
+	position: relative;
 }
 
 .contentEl {
-    width:90%;
-    margin-left:5%;
-    top:2%;
-    height:85%;
-    color:white;
-    overflow:scroll;
-    overflow-wrap:break-word;
-    position:relative;
-    font-size:1.5vmin;
+	width: 90%;
+	margin-left: 5%;
+	top: 2%;
+	height: 85%;
+	color: white;
+	overflow: scroll;
+	overflow-wrap: break-word;
+	position: relative;
+	font-size: 1.5vmin;
 }
 
-.dateEl, .authorEl, .removeButton {
-    margin:0;
-    padding:0;
-    font-size:1.7vmin;
+.dateEl,
+.authorEl,
+.removeButton {
+	margin: 0;
+	padding: 0;
+	font-size: 1.7vmin;
 }
 
 .removeButton {
-    color:red;
+	color: red;
 }
 
 .removeButton:hover {
-    text-decoration:underline;
-    cursor:pointer;
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 body {
-    overflow:hidden;
+	overflow: hidden;
 }
 
 #chatroomContainer {
-    width:100%;
-    margin-top:0;
-    height:100%;
-    margin-left:0;
-    position:absolute;
+	width: 100%;
+	margin-top: 0;
+	height: 100%;
+	margin-left: 0;
+	position: absolute;
 }
 
 #chatFrame {
-    all:unset;
-    width:100%;
-    height:100%;
-    left:0;
-    top:0;
-    position:absolute;
-}
-
-#profileWrapper {
-    width:80%;
-    height:30%;
-    left:10%;
-    top:1%;
-    position:absolute;
-    background:rgb(80, 80, 80);
+	all: unset;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	position: absolute;
 }
 
 #friendsContainer {
-    display:grid;
-    grid-template-columns: auto auto auto;
-    padding:10px;
-    width:100%;
-    height:100%;
-    position:absolute;
-    overflow:scroll;
-    /* justify-content: center; */
+	display: grid;
+	grid-template-columns: auto auto auto;
+	padding: 10px;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	overflow: scroll;
+	/* justify-content: center; */
 }
 
 .friendCard {
-    height:10ex;
-    position:relative;
-    background:rgb(80, 80, 80);
-    padding:20px;
-    margin:10px;
-    text-align:center;
-    color:white;
+	height: 10ex;
+	position: relative;
+	background: rgb(80, 80, 80);
+	padding: 20px;
+	margin: 10px;
+	text-align: center;
+	color: white;
 }
 
 .friendCard:hover {
-    background:rgb(60, 60, 60);
-    cursor: pointer;
+	background: rgb(60, 60, 60);
+	cursor: pointer;
 }
 
 .friendCard:active {
-    background:rgb(40, 40, 40);
-    cursor: pointer;
+	background: rgb(40, 40, 40);
+	cursor: pointer;
 }
 
 .friendCardUserName {
-    font-size:2em;
+	font-size: 2em;
 }
 
 .authorEl:hover {
-    text-decoration: underline;
-    cursor:pointer;
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 #profileFeedWrapper {
-    width:80%;
-    left:10%;
-    top:32%;
-    height:67%;
-    position:absolute;
-    display:grid;
-    grid-template-columns: 33% 33% 33%;
-    grid-auto-rows: 40%;
-    /* overflow:scroll; */
-    gap: 5px 5px;
-}
-
-#profileTitle {
-    font-size:3em;
-    color:white;
-}
-
-#friendButton {
-    width:fit-content;
-    margin:10px;
-}
-
-#openDM {
-    width:fit-content;
-    margin:10px;
+	width: 80%;
+	left: 10%;
+	top: 32%;
+	height: 67%;
+	position: absolute;
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
+	grid-auto-rows: 40%;
+	/* overflow:scroll; */
+	gap: 5px 5px;
 }
 
 #profileWrapper {
-    padding:10px;
+	width: 80%;
+	height: 30%;
+	left: 10%;
+	top: 1%;
+	position: absolute;
+	background: rgb(80, 80, 80);
+	display:grid;
+	grid-template-rows: 40% 60%;
+}
+
+#profileTopbar {
+	display:grid;
+	grid-template-columns: auto auto;
+}
+
+#profileTitle {
+	font-size: 3em;
+	color: white;
+	margin:10px;
+}
+
+#profileTopbarButtons {
+	right:0;
+	position:absolute;
+}
+
+#profileBioWrapper {
+	padding:10px;
+	display:grid;
+	grid-template-rows: 70% 30%;
+	gap:5px 5px;
+}
+
+#bioChild {
+	width:100%;
+	height:100%;
+}
+
+.bioWhite {
+	color:white;
+}
+
+#btnWrapper {
+	height:100%;
+	position:relative;
+}
+
+#setBioButton {
+	width:fit-content;
+	width:-moz-fit-content;
+	font-size:1.4em;
+	right:0;
+	position:absolute;
+}
+
+#friendButton {
+	width: fit-content;
+	width: -moz-fit-content;
+	margin: 10px;
+}
+
+#openDM {
+	width: fit-content;
+	width: -moz-fit-content;
+	margin: 10px;
+}
+
+#loginAs {
+	width: fit-content;
+	width: -moz-fit-content;
+	margin: 10px;
+}
+
+#profileWrapper {
+	padding: 10px;
 }
 
 #dmSidebar {
-    width:15%;
-    height:100%;
-    position:absolute;
-    display:grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto auto auto auto auto auto auto auto auto auto;
-    overflow:scroll;
-    overflow-x:hidden;
-    background-color:rgb(57, 57, 57);
+	width: 15%;
+	height: 100%;
+	position: absolute;
+	display: grid;
+	grid-template-columns: auto;
+	grid-template-rows: auto auto auto auto auto auto auto auto auto auto;
+	overflow: scroll;
+	overflow-x: hidden;
+	background-color: rgb(57, 57, 57);
 }
 
 #dmWrapper {
-    width:85%;
-    left:15%;
-    height:90%;
-    position:absolute;
-    overflow:scroll;
-    overflow-x:hidden;
-    -ms-overflow-style:initial;
-    scrollbar-width:15px;
+	width: 85%;
+	left: 15%;
+	height: 90%;
+	position: absolute;
+	overflow: scroll;
+	overflow-x: hidden;
+	-ms-overflow-style: initial;
+	scrollbar-width: 15px;
 }
 
 #dmWrapper::-webkit-scrollbar {
-    width: 15px;
+	width: 15px;
 }
 
 #dmWrapper::-webkit-scrollbar-track {
-    background:rgb(47, 47, 47);
-    border-radius:15px;
-    /* border-style:solid;
+	background: rgb(47, 47, 47);
+	border-radius: 15px;
+	/* border-style:solid;
     border-color:rgb(80, 80, 80);
     border-width:2px; */
 }
 
 #dmWrapper::-webkit-scrollbar-thumb {
-    background: rgb(80, 80, 80);
-    border-radius:15px;
+	background: rgb(80, 80, 80);
+	border-radius: 15px;
 }
 
 #dmWrapper ::-webkit-scrollbar-thumb:hover {
-    background: gray;
+	background: gray;
 }
 
-
-
-
-
-
-
-
 #dmFooter {
-    width:85%;
-    left:15%;
-    height:10%;
-    top:90%;
-    position:absolute;
-    background-color:rgb(100, 100, 100);
-    display:grid;
-    grid-template-columns: 90% 10%;
+	width: 85%;
+	left: 15%;
+	height: 10%;
+	top: 90%;
+	position: absolute;
+	background-color: rgb(100, 100, 100);
+	display: grid;
+	grid-template-columns: 90% 10%;
 }
 
 #dmTextbox {
-    margin:10px;
-    border-radius: 8px 0px 0px 8px; 
-    border-right:none;
-    border-width:2px;
+	margin: 10px;
+	border-radius: 8px 0px 0px 8px;
+	border-right: none;
+	border-width: 2px;
 }
 
 #dmFButton {
-    margin:10px;
-    font-size:larger;
-    margin-left:-10px;
-    border-radius: 0px 8px 8px 0px;
-    border-left:none;
-    border-color:rgb(44, 124, 190);
-    border-width:2px;
+	margin: 10px;
+	font-size: larger;
+	margin-left: -10px;
+	border-radius: 0px 8px 8px 0px;
+	border-left: none;
+	border-color: rgb(44, 124, 190);
+	border-width: 2px;
 }
 
 .dm-card {
-    margin:5px;
-    background-color:rgb(80, 80, 80);
-    color:white;
-    text-align:center;
-    font-size:3vmin;
-    height:fit-content;
+	margin: 5px;
+	background-color: rgb(80, 80, 80);
+	color: white;
+	text-align: center;
+	font-size: 3vmin;
+	height: fit-content;
+	height: -moz-fit-content;
 }
 
 .dm-card:hover {
-    background-color:rgb(60, 60, 60);
-    cursor:pointer;
+	background-color: rgb(60, 60, 60);
+	cursor: pointer;
 }
 
 .dm-card:active {
-    background-color:rgb(40, 40, 40);
+	background-color: rgb(40, 40, 40);
+}
+
+.dm-card.noti {
+	background-color:rgb(44, 124, 190);
+}
+
+.dm-card.noti:hover {
+	background-color:rgb(24, 104, 170);
+}
+
+.dm-card.noti:active {
+	background-color:rgb(4, 84, 150);
+}
+
+.dm-card.open {
+	border-radius: 8px 0px 0px 8px;
+	margin-right:-10px;
+	background-color:rgb(100, 100, 100);
 }
 
 #noConvs {
-    color:white;
-    font-size:larger;
-    text-align:center;
+	color: white;
+	font-size: larger;
+	text-align: center;
 }
 
 .msgWrapper {
-    width:40%;
-    height:fit-content;
-    margin:10px;
-    padding:10px;
+	width: 40%;
+	height: fit-content;
+	height: -moz-fit-content;
+	margin: 10px;
+	padding: 10px;
 }
 
 .msgAuthor {
-    font-size:large;
+	font-size: large;
+}
+
+.msgAuthor:hover {
+	text-decoration:underline;
+	cursor:pointer;
 }
 
 .msgWrapper-partner {
-    background-color:white;
+	background-color: white;
 }
 
 .msgWrapper-self {
-    background-color:rgb(44, 124, 190);
-    color:white;
-    margin-left:60%;
-    transform:translateX(-10px);
+	background-color: rgb(44, 124, 190);
+	color: white;
+	margin-left: 60%;
+	transform: translateX(-10px);
 }
 
 #searchTabContainer {
-    display:grid;
-    grid-template-columns: auto auto auto;
-    padding:10px;
-    width:100%;
-    height:100%;
-    position:absolute;
-    overflow:scroll;
-    /* justify-content: center; */
+	display: grid;
+	grid-template-columns: auto auto auto;
+	padding: 10px;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	overflow: scroll;
+	/* justify-content: center; */
 }
 
 .unreadBubble {
-    border-radius:50%;
-    width:10px;
-    height:10px;
-    position:absolute;
-    left:85%;
-    transform:translateY(-300%);
+	border-radius: 50%;
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	left: 85%;
+	transform: translateY(-300%);
 }
 
 .unreadBubble-noti {
-    background-color:rgb(44, 124, 190);
+	background-color: rgb(44, 124, 190);
 }
 
 .unreadBubble-nonoti {
-    background-color:rgba(0, 0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
 }

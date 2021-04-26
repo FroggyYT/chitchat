@@ -1,4 +1,3 @@
-{"username":"luke","password":"lukebb0215","feedPosts":[],"friends":[],"uuid":"2660c5f2-9829-4350-9589-d7cf397f4334","_id":"QzksbM2ucUTNRVes"}
-{"username":"admin","password":"test","feedPosts":[],"friends":[],"uuid":"2dae0e44-ec61-4a47-83c5-1bab116e1184","_id":"dWo3FrphTx2yR9U5"}
-{"username":"bkbarrier","password":"aholein1","feedPosts":[],"friends":[],"uuid":"6acccb07-cebe-4edf-8022-9d112546e367","_id":"0skRihkqY2Fp84b8"}
-{"username":"bkbarrier","password":"aholein1","feedPosts":[],"friends":["luke"],"uuid":"6acccb07-cebe-4edf-8022-9d112546e367","_id":"0skRihkqY2Fp84b8"}
+{"username":"bkbarrier","password":"aholein1","feedPosts":["4e721c48-e6d6-4632-beae-3a20d0be18e5"],"friends":["luke"],"bio":"I am a follower of Jesus and husband to my loving bride, Michelle! We have two wonderful boys, Trevor and Luke. ","uuid":"6acccb07-cebe-4edf-8022-9d112546e367","_id":"0skRihkqY2Fp84b8"}
+{"username":"luke","password":"lukebb0215","feedPosts":["0985a665-1866-4dd3-ae7c-feffa05cea09","119ca75e-f1b9-436f-9806-9c447f7bee94"],"friends":["bkbarrier","admin"],"uuid":"2660c5f2-9829-4350-9589-d7cf397f4334","_id":"QzksbM2ucUTNRVes","bio":"Founder and head developer of ChitChat"}
+{"username":"admin","password":"Lukebb0215!","feedPosts":[],"friends":["luke"],"bio":"Admin account","uuid":"2dae0e44-ec61-4a47-83c5-1bab116e1184","_id":"dWo3FrphTx2yR9U5"}
