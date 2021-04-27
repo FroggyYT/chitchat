@@ -157,12 +157,34 @@
 	position: relative;
 }
 
+#newFeedFooter {
+	top:5%;
+	width:90%;
+	left:5%;
+	height:15%;
+	position:relative;
+	/* display:grid;
+	grid-template-columns: 50% 50%; */
+}
+
+#newFeedTextCount {
+	color:white;
+	right:25%;
+	position:absolute;
+	top:50%;
+	transform:translateY(-50%);
+}
+
+#newFeedTextCount.overflow {
+	color:red;
+}
+
 #newFeedPostButton {
-	width: 20%;
-	left: 75%;
-	top: 5%;
-	height: 15%;
-	position: relative;
+	position: absolute;
+	right:0;
+	top:0;
+	height:100%;
+	width:20%;
 }
 
 .feed-card {

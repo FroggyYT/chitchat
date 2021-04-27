@@ -190,37 +190,59 @@ var feedContainer = new REL("div", mainContainer, "feedContainer", () => {
 	newFeedInput.className = "rounded card";
 	newFeed.append(newFeedInput);
 
+	var newFeedFooter = new El("div", newFeed);
+	newFeedFooter.e.id = "newFeedFooter";
+
+	var newFeedTextCount = document.createElement("span");
+	newFeedTextCount.id = "newFeedTextCount";
+	newFeedFooter.e.append(newFeedTextCount);
+
+	var newFeedTextCountCurrent = new El("a", newFeedTextCount);
+	newFeedTextCountCurrent.e.id = "newFeedTextCountCurrent";
+	newFeedTextCountCurrent.e.textContent = "0";
+
+	var newFeedTextCountMax = new El("a", newFeedTextCount);
+	newFeedTextCountMax.e.id = "newFeedTextCountMax";
+	newFeedTextCountMax.e.textContent = " / 400";
+
 	var newFeedPostButton = document.createElement("button");
 	newFeedPostButton.id = "newFeedPostButton";
 	newFeedPostButton.className = "rounded btn";
 	newFeedPostButton.textContent = "Post";
-	newFeed.append(newFeedPostButton);
+	newFeedFooter.e.append(newFeedPostButton);
+
+	newFeedInput.addEventListener("input", () => {
+		newFeedTextCountCurrent.e.textContent = newFeedInput.value.length;
+		if (newFeedInput.value.length > 400) {
+			newFeedTextCount.classList.add("overflow");
+		} else {
+			newFeedTextCount.classList.remove("overflow");
+		}
+	});
 
 	newFeedPostButton.addEventListener("click", () => {
 		var contentText = newFeedInput.value;
-		newFeedInput.value = "";
-		var reqData = {
-			"method": "post",
-			"body": JSON.stringify({
-				"name": Cookies.get("username"),
-				"auth": {
-					"username": Cookies.get("username"),
-					"password": Cookies.get("password")
-				},
-				"content": contentText
-			}),
-			"headers": {
-				"Content-Type": "application/json"
+		if (contentText.length <= 400 && contentText.length > 0) {
+			newFeedInput.value = "";
+			newFeedTextCountCurrent.e.textContent = "0";
+			var reqData = {
+				"method": "post",
+				"body": JSON.stringify({
+					"name": Cookies.get("username"),
+					"auth": {
+						"username": Cookies.get("username"),
+						"password": Cookies.get("password")
+					},
+					"content": contentText
+				}),
+				"headers": {
+					"Content-Type": "application/json"
+				}
 			}
-		}
 
-		fetch("/newFeedPost", reqData);
+			fetch("/newFeedPost", reqData);
+		}	
 	});
-
-	/*var newFeedTextCount = document.createElement("p");
-	newFeedTextCount.id = "newFeedTextCount";
-	newFeedTextCount.textContent = "0/240";
-	newFeedInput.append(newFeedTextCount);*/
 
 	var requestOptions = {
 		method: 'GET',
